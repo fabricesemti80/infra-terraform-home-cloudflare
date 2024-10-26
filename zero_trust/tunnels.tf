@@ -18,7 +18,33 @@ locals {
       name     = "plex"
       hostname = "plex.fabricesemti.dev"
       port     = 32400
-    }    
+    },
+
+    {
+      name     = "nextcloud"
+      hostname = "nextcloud.fabricesemti.dev"
+      port     = 10081
+    },
+    {
+      name     = "transmission"
+      hostname = "transmission.fabricesemti.dev"
+      port     = 9091
+    },
+    {
+      name     = "portainer"
+      hostname = "portainer.fabricesemti.dev"
+      port     = 9000
+    },
+    {
+      name     = "sonarr"
+      hostname = "sonarr.fabricesemti.dev"
+      port     = 8989
+    },
+    {
+      name     = "prowlarr"
+      hostname = "prowlarr.fabricesemti.dev"
+      port     = 9696
+    }
   ]
 }
 
@@ -32,7 +58,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "existing_tunnel" {
 # Add DNS records for each domain specified in locals
 resource "cloudflare_record" "dns_records" {
   for_each = { for domain in local.domains : domain.name => domain }
-  
+
   zone_id = var.zone_id
   name    = each.value.name
   content = "${cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id}.cfargotunnel.com"
@@ -76,7 +102,7 @@ output "tunnel_name" {
 output "credentials_json" {
   description = "JSON credentials content for ~/.cloudflared/<TUNNEL_ID>.json"
   sensitive   = true
-  value       = jsonencode({
+  value = jsonencode({
     AccountTag   = var.account_id
     TunnelID     = cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id
     TunnelName   = cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.name
