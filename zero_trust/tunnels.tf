@@ -1,33 +1,60 @@
 # Define the tunnel resource
 #? Import it with "terraform import cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel ${TF_VAR_account_id}/ea8ef032-4e1b-408d-ba6d-abd101a6d54c"
 #? $ terraform import cloudflare_zero_trust_tunnel_cloudflared.example <account_id>/<tunnel_id>
+# Define locals for hostname, domain, and port
+locals {
+  domains = [
+    {
+      name     = "casa"
+      hostname = "casa.fabricesemti.dev"
+      port     = 8080
+    },
+    {
+      name     = "jelly"
+      hostname = "jelly.fabricesemti.dev"
+      port     = 8097
+    },
+    {
+      name     = "plex"
+      hostname = "plex.fabricesemti.dev"
+      port     = 32400
+    }    
+  ]
+}
+
+# Define the tunnel resource and import it
 resource "cloudflare_zero_trust_tunnel_cloudflared" "existing_tunnel" {
   account_id = var.account_id
   name       = "docker-tunnel-new"
-  secret     = var.tunnel_secret_docker # This should match your existing tunnel's secret
-  # config_src = "cloudflare" # Use "local" if you want to manage config in Terraform
+  secret     = var.tunnel_secret_docker
 }
 
-# Add DNS record for the tunnel
-resource "cloudflare_record" "casa" {
+# Add DNS records for each domain specified in locals
+resource "cloudflare_record" "dns_records" {
+  for_each = { for domain in local.domains : domain.name => domain }
+  
   zone_id = var.zone_id
-  name    = "casa"
-  content   = "${cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id}.cfargotunnel.com"
+  name    = each.value.name
+  content = "${cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id}.cfargotunnel.com"
   type    = "CNAME"
   proxied = true
 }
 
-# Add tunnel configuration with ingress rules
-resource "cloudflare_zero_trust_tunnel_cloudflared_config" "tunnel" {
+# Configure tunnel ingress rules dynamically based on locals
+resource "cloudflare_zero_trust_tunnel_cloudflared_config" "tunnel_config" {
   account_id = var.account_id
   tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id
 
   config {
-    ingress_rule {
-      hostname = "casa.fabricesemti.dev"
-      service  = "http://localhost:8080"
+    # Dynamic ingress rules from locals
+    dynamic "ingress_rule" {
+      for_each = local.domains
+      content {
+        hostname = ingress_rule.value.hostname
+        service  = "http://localhost:${ingress_rule.value.port}"
+      }
     }
-    
+
     # Default catch-all rule
     ingress_rule {
       service = "http_status:404"
@@ -35,14 +62,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "tunnel" {
   }
 }
 
-# # Existing Zero Trust tunnel resource
-# resource "cloudflare_zero_trust_tunnel_cloudflared" "existing_tunnel" {
-# account_id = var.account_id
-# name = "docker-tunnel"
-# secret = var.tunnel_secret_docker
-# }
-
-# Outputs for cloudfared configuration
+# Outputs for Cloudflare configuration
 output "tunnel_id" {
   description = "ID of the Cloudflare Tunnel"
   value       = cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id
@@ -64,39 +84,25 @@ output "credentials_json" {
   })
 }
 
-output "config_yaml" {
-  description = "YAML configuration for ~/.cloudflared/config.yaml"
-  value       = yamlencode({
-    tunnel            = cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id
-    credentials-file  = "~/.cloudflared/${cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id}.json"
-    ingress = [
-      {
-        hostname = "casa.fabricesemti.dev" # Modify as needed
-        service  = "http://localhost:8080" # Modify as needed
-      },
-      {
-        service = "http_status:404" # Default catch-all rule
-      }
-    ]
-  })
-}
+# output "config_yaml" {
+#   description = "YAML configuration for ~/.cloudflared/config.yaml"
+#   value       = yamlencode({
+#     tunnel            = cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id
+#     credentials-file  = "~/.cloudflared/${cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id}.json"
+#     ingress = [
+#       for domain in local.domains : {
+#         hostname = domain.hostname
+#         service  = "http://localhost:${domain.port}"
+#       },
+#       {
+#         service = "http_status:404" # Default catch-all rule
+#       }
+#     ]
+#   })s
+# }
 
 output "tunnel_token" {
   description = "Tunnel token for cloudflared"
   sensitive   = true
   value       = cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.tunnel_token
 }
-
-# # Optional: Output for Docker configuration
-# output "docker_config" {
-# description = "Docker run command with environment variables"
-# sensitive = true
-# value = <<-EOT
-# docker run -d \
-# --name cloudflared \
-# --restart unless-stopped \
-# -e TUNNEL_TOKEN=${cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id} \
-# cloudflare/cloudflared:latest \
-# tunnel run
-# EOT
-# }
