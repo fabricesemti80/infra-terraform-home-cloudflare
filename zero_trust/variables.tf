@@ -1,16 +1,16 @@
 
 
-variable "api_token" {
+variable "cf_api_token" {
   default = ""
   type    = string
 }
 
-variable "zone_id" {
+variable "cf_zone_id" {
   default = ""
   type    = string
 }
 
-variable "account_id" {
+variable "cf_account_id" {
   default = ""
   type    = string
 }

@@ -1,6 +1,6 @@
 # Define the tunnel resource
-#? Import it with "terraform import cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel ${TF_VAR_account_id}/ea8ef032-4e1b-408d-ba6d-abd101a6d54c"
-#? $ terraform import cloudflare_zero_trust_tunnel_cloudflared.example <account_id>/<tunnel_id>
+#? Import it with "terraform import cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel ${TF_VAR_cf_account_id}/ea8ef032-4e1b-408d-ba6d-abd101a6d54c"
+#? $ terraform import cloudflare_zero_trust_tunnel_cloudflared.example <cf_account_id>/<tunnel_id>
 # Define locals for hostname, domain, and port
 locals {
   domains = [
@@ -48,14 +48,14 @@ locals {
 }
 # Define the tunnel resource and import it
 resource "cloudflare_zero_trust_tunnel_cloudflared" "existing_tunnel" {
-  account_id = var.account_id
+  account_id = var.cf_account_id
   name       = "docker-tunnel-new"
   secret     = var.tunnel_secret_docker
 }
 # Add DNS records for each domain specified in locals
 resource "cloudflare_record" "dns_records" {
   for_each = { for domain in local.domains : domain.name => domain }
-  zone_id = var.zone_id
+  zone_id = var.cf_zone_id
   name    = each.value.name
   content = "${cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id}.cfargotunnel.com"
   type    = "CNAME"
@@ -63,7 +63,7 @@ resource "cloudflare_record" "dns_records" {
 }
 # Configure tunnel ingress rules dynamically based on locals
 resource "cloudflare_zero_trust_tunnel_cloudflared_config" "tunnel_config" {
-  account_id = var.account_id
+  account_id = var.cf_account_id
   tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id
   config {
     # Dynamic ingress rules from locals
@@ -93,7 +93,7 @@ output "credentials_json" {
   description = "JSON credentials content for ~/.cloudflared/<TUNNEL_ID>.json"
   sensitive   = true
   value = jsonencode({
-    AccountTag   = var.account_id
+    AccountTag   = var.cf_account_id
     TunnelID     = cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.id
     TunnelName   = cloudflare_zero_trust_tunnel_cloudflared.existing_tunnel.name
     TunnelSecret = var.tunnel_secret_docker
