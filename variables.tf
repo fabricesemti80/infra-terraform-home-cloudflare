@@ -3,6 +3,7 @@
 variable "cf_api_token" {
   default = ""
   type    = string
+  sensitive = true
 }
 
 variable "cf_zone_id" {
@@ -13,6 +14,7 @@ variable "cf_zone_id" {
 variable "cf_account_id" {
   default = ""
   type    = string
+  sensitive = true
 }
 
 variable "cf_domain" {
