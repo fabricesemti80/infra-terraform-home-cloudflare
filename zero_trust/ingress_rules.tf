@@ -3,44 +3,59 @@ locals {
   domains = [
     {
       name     = "casa"
-      hostname = "casa.fabricesemti.dev"
+      hostname = "casa.${var.cf_domain}"
       port     = 8080
     },
     {
       name     = "jelly"
-      hostname = "jelly.fabricesemti.dev"
+      hostname = "jelly.${var.cf_domain}"
       port     = 8097
     },
     {
+      name     = "jenkins"
+      hostname = "jenkins.${var.cf_domain}"
+      port     = 8888
+    },    
+    {
       name     = "nextcloud"
-      hostname = "nextcloud.fabricesemti.dev"
+      hostname = "nextcloud.${var.cf_domain}"
       port     = 10081
+    },
+        {
+      name     = "photoprism"
+      hostname = "photoprism.${var.cf_domain}"
+      port     = 2342
     },
     {
       name     = "plex"
-      hostname = "plex.fabricesemti.dev"
+      hostname = "plex.${var.cf_domain}"
       port     = 32400
     },
     {
       name     = "portainer"
-      hostname = "portainer.fabricesemti.dev"
+      hostname = "portainer.${var.cf_domain}"
       port     = 9000
     },
     {
       name     = "prowlarr"
-      hostname = "prowlarr.fabricesemti.dev"
+      hostname = "prowlarr.${var.cf_domain}"
       port     = 9696
     },
     {
       name     = "sonarr"
-      hostname = "sonarr.fabricesemti.dev"
+      hostname = "sonarr.${var.cf_domain}"
       port     = 8989
     },
     {
       name     = "transmission"
-      hostname = "transmission.fabricesemti.dev"
+      hostname = "transmission.${var.cf_domain}"
       port     = 9091
     },
+    {
+      name     = "trilium"
+      hostname = "trilium.${var.cf_domain}"
+      port     = 8088
+    },    
   ]
 }
 # Add DNS records for each domain specified in locals

@@ -15,7 +15,7 @@ variable "cf_account_id" {
   type    = string
 }
 
-variable "domain" {
+variable "cf_domain" {
   default = ""
   type    = string
 }
