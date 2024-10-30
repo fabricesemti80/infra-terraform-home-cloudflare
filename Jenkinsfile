@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     environment {
         // Credentials binding
         CF_API_TOKEN = credentials('cf-api-token')
@@ -11,7 +11,7 @@ pipeline {
         TUNNEL_SECRET_DOCKER = credentials('tunnel-secret-docker')
         TF_TOKEN_app_terraform_io = credentials('tf_cloud_token')
         GITHUB_SSH_KEY = credentials('github-ssh-key')
-        
+
         // Set Terraform variables once
         TF_VAR_cf_api_token = "${CF_API_TOKEN}"
         TF_VAR_cf_zone_id = "${CF_ZONE_ID}"
@@ -20,7 +20,7 @@ pipeline {
         TF_VAR_tunnel_id_docker = "${TUNNEL_ID_DOCKER}"
         TF_VAR_tunnel_secret_docker = "${TUNNEL_SECRET_DOCKER}"
     }
-    
+
     stages {
         stage('Setup SSH') {
             steps {
@@ -32,7 +32,7 @@ pipeline {
                 '''
             }
         }
-        
+
         stage('Install Prerequisites') {
             steps {
                 sh '''
@@ -41,26 +41,26 @@ pipeline {
                 '''
             }
         }
-        
+
         stage('Install Terraform') {
             steps {
                 sh '''
                     # Download and add the HashiCorp GPG key without interactive prompt
                     curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
-                    
+
                     # Add the HashiCorp repository
                     echo "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
-                    
+
                     # Update and install Terraform
                     apt-get update
                     apt-get install -y terraform
-                    
+
                     # Verify installation
                     terraform --version
                 '''
             }
         }
-        
+
         stage('Checkout') {
             steps {
                 git branch: 'main',
@@ -68,19 +68,19 @@ pipeline {
                     url: 'git@github.com:fabricesemti80/clouds-cloudflare.git'
             }
         }
-        
+
         stage('Terraform Init') {
             steps {
                 sh 'terraform init'
             }
         }
-        
+
         stage('Terraform Plan') {
             steps {
                 sh 'terraform plan -out=tfplan'
             }
         }
-        
+
         stage('Terraform Apply') {
             steps {
                 input message: 'Apply the plan?'
@@ -88,7 +88,7 @@ pipeline {
             }
         }
     }
-    
+
     post {
         always {
             sh '''
