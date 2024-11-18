@@ -21,6 +21,17 @@ locals {
       hostname = "nextcloud.${var.cf_domain}"
       port     = 10081
     },
+    {
+      name     = "nzbget"
+      hostname = "nzbget.${var.cf_domain}"
+      port     = 6789
+    },    
+
+    {
+      name     = "overseer"
+      hostname = "overseer.${var.cf_domain}"
+      port     = 5055
+    },     
         {
       name     = "photoprism"
       hostname = "photoprism.${var.cf_domain}"
@@ -40,6 +51,12 @@ locals {
       name     = "prowlarr"
       hostname = "prowlarr.${var.cf_domain}"
       port     = 9696
+    },
+
+        {
+      name     = "radarr"
+      hostname = "radarr.${var.cf_domain}"
+      port     = 7878
     },
     {
       name     = "sonarr"
