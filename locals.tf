@@ -10,6 +10,14 @@ locals {
     },
     {
       protocol = "http"
+      name     = "plex"
+      host     = "localhost"
+      hostname = "plex.${var.cf_domain}"
+      port     = 32400
+    },
+        
+    {
+      protocol = "http"
       name     = "portainer"
       host     = "localhost"
       hostname = "portainer.${var.cf_domain}"

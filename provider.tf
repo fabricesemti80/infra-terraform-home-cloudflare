@@ -5,6 +5,13 @@ terraform {
       version = "5.0.0-rc1"
     }
   }
+
+  backend "remote" {
+    organization = "homelab-fsemti"
+    workspaces {
+      name = "homelab-fsemti"
+    }
+  }  
 }
 
 # backend "remote" {
