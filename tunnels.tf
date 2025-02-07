@@ -26,7 +26,7 @@ output "tunnel_name" {
 
 
 resource "local_file" "tunnel_credentials" {
-  count = terraform.workspace == "default" ? 1 : 0 #! Add a condition to only create them when running locally using the terraform.workspace check
+  # count = terraform.workspace == "default" ? 1 : 0 #! Add a condition to only create them when running locally using the terraform.workspace check
   content = jsonencode({
     AccountTag   = var.cf_account_id
     TunnelID     = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
@@ -36,20 +36,11 @@ resource "local_file" "tunnel_credentials" {
   filename = pathexpand("~/.cloudflared/${cloudflare_zero_trust_tunnel_cloudflared.tunnel.id}.json")
 }
 
-
-
-
 resource "local_file" "tunnel_config" {
-  count = terraform.workspace == "default" ? 1 : 0 #! Add a condition to only create them when running locally using the terraform.workspace check
+  # count = terraform.workspace == "default" ? 1 : 0 #! Add a condition to only create them when running locally using the terraform.workspace check
   content = yamlencode({
     tunnel           = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
     credentials-file = "~/.cloudflared/${cloudflare_zero_trust_tunnel_cloudflared.tunnel.id}.json"
   })
   filename = pathexpand("~/.cloudflared/config.yaml")
 }
-
-# output "tunnel_token" {
-#   description = "Tunnel token for cloudflared"
-#   sensitive   cloudflare_zero_trust_tunnel_cloudflared.tunnel.tunnel_token= true
-#   value       = 
-# }

@@ -3,87 +3,97 @@ locals {
   domains = [
     {
       protocol = "http"
-      name     = "casa"
-      host     = "10.0.40.102"
-      hostname = "casa.${var.cf_domain}"
-      port     = 8080
+      name     = "grafana"
+      host     = "10.0.40.20"
+      hostname = "grafana.${var.cf_domain}"
+      port     = 3000
+    },
+        {
+      protocol = "http"
+      name     = "hass"
+      host     = "10.0.40.21"
+      hostname = "hass.${var.cf_domain}"
+      port     = 8123
     },
     {
       protocol = "http"
-      name     = "it-tools"
-      host     = "localhost"
-      hostname = "it-tools.${var.cf_domain}"
-      port     = 10010
+      name     = "prometheus"
+      host     = "10.0.40.20"
+      hostname = "prometheus.${var.cf_domain}"
+      port     = 9090
     },
     {
       protocol = "http"
       name     = "plex"
-      host     = "localhost"
+      host     = "10.0.40.2"
       hostname = "plex.${var.cf_domain}"
       port     = 32400
     },
-    {
-      protocol = "http"
-      name     = "portainer"
-      host     = "localhost"
-      hostname = "portainer.${var.cf_domain}"
-      port     = 9000
-    },
-    {
-      protocol = "http"
-      name     = "nextcloud"
-      host     = "localhost"
-      hostname = "nextcloud.${var.cf_domain}"
-      port     = 10020
-    },
+    # {
+    #   protocol = "http"
+    #   name     = "portainer"
+    #   host     = "10.0.40.20"
+    #   hostname = "portainer.${var.cf_domain}"
+    #   port     = 8000
+    # },
+    # {
+    #   protocol = "http"
+    #   name     = "nextcloud"
+    #   host     = "localhost"
+    #   hostname = "nextcloud.${var.cf_domain}"
+    #   port     = 10020
+    # },
     {
       protocol = "http"
       name     = "overseerr"
-      host     = "localhost"
+      host     = "10.0.40.20"
       hostname = "overseerr.${var.cf_domain}"
-      port     = 10030
+      port     = 5055
     },
     {
       protocol = "http"
       name     = "prowlarr"
-      host     = "localhost"
+      host     = "10.0.40.20"
       hostname = "prowlarr.${var.cf_domain}"
-      port     = 10040
+      port     = 9696
     },
     {
       protocol = "http"
       name     = "radarr"
-      host     = "localhost"
+      host     = "10.0.40.20"
       hostname = "radarr.${var.cf_domain}"
-      port     = 10050
+      port     = 7878
     },
     {
       protocol = "http"
       name     = "sonarr"
-      host     = "localhost"
+      host     = "10.0.40.20"
       hostname = "sonarr.${var.cf_domain}"
-      port     = 10060
+      port     = 8989
     },
     {
       protocol = "http"
       name     = "sabnzbd"
-      host     = "localhost"
+      host     = "10.0.40.20"
       hostname = "sabnzbd.${var.cf_domain}"
-      port     = 10070
+      port     = 18080
     },
+    # {
+    #   protocol = "http"
+    #   name     = "wallos"
+    #   # host     = "localhost"
+    #   host = "wallos"
+    #   hostname = "wallos.${var.cf_domain}"
+    #   # port     = 10110
+    #   port     = 80
+    # },
     {
+      # HomePage
       protocol = "http"
       name     = "@" #! root
-      host     = "localhost"
+      host     = "10.0.40.20"
       hostname = "${var.cf_domain}"
-      port     = 10100
+      port     = 11111
     },
-    {
-      protocol = "http"
-      name     = "wallos"
-      host     = "localhost"
-      hostname = "wallos.${var.cf_domain}"
-      port     = 10110
-    }
   ]
 }
