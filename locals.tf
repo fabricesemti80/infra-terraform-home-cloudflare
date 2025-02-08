@@ -29,13 +29,13 @@ locals {
       hostname = "plex.${var.cf_domain}"
       port     = 32400
     },
-    # {
-    #   protocol = "http"
-    #   name     = "portainer"
-    #   host     = "10.0.40.20"
-    #   hostname = "portainer.${var.cf_domain}"
-    #   port     = 8000
-    # },
+    {
+      protocol = "http"
+      name     = "n8n"
+      host     = "10.0.40.21"
+      hostname = "n8n.${var.cf_domain}"
+      port     = 5678
+    },
     # {
     #   protocol = "http"
     #   name     = "nextcloud"
