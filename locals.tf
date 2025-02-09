@@ -1,6 +1,14 @@
 # Define locals for hostname, domain, and port
 locals {
-  domains = [
+  tunnel_dns = [
+    {
+      # HomePage
+      protocol = "http"
+      name     = "@" #! root
+      host     = "10.0.40.20"
+      hostname = "${var.cf_domain}"
+      port     = 11111
+    },
     {
       protocol = "http"
       name     = "grafana"
@@ -8,7 +16,7 @@ locals {
       hostname = "grafana.${var.cf_domain}"
       port     = 3000
     },
-        {
+    {
       protocol = "http"
       name     = "hass"
       host     = "10.0.40.21"
@@ -17,10 +25,17 @@ locals {
     },
     {
       protocol = "http"
-      name     = "prometheus"
+      name     = "n8n"
+      host     = "10.0.40.21"
+      hostname = "n8n.${var.cf_domain}"
+      port     = 5678
+    },
+    {
+      protocol = "http"
+      name     = "overseerr"
       host     = "10.0.40.20"
-      hostname = "prometheus.${var.cf_domain}"
-      port     = 9090
+      hostname = "overseerr.${var.cf_domain}"
+      port     = 5055
     },
     {
       protocol = "http"
@@ -31,24 +46,10 @@ locals {
     },
     {
       protocol = "http"
-      name     = "n8n"
-      host     = "10.0.40.21"
-      hostname = "n8n.${var.cf_domain}"
-      port     = 5678
-    },
-    # {
-    #   protocol = "http"
-    #   name     = "nextcloud"
-    #   host     = "localhost"
-    #   hostname = "nextcloud.${var.cf_domain}"
-    #   port     = 10020
-    # },
-    {
-      protocol = "http"
-      name     = "overseerr"
+      name     = "prometheus"
       host     = "10.0.40.20"
-      hostname = "overseerr.${var.cf_domain}"
-      port     = 5055
+      hostname = "prometheus.${var.cf_domain}"
+      port     = 9090
     },
     {
       protocol = "http"
@@ -66,34 +67,30 @@ locals {
     },
     {
       protocol = "http"
-      name     = "sonarr"
-      host     = "10.0.40.20"
-      hostname = "sonarr.${var.cf_domain}"
-      port     = 8989
-    },
-    {
-      protocol = "http"
       name     = "sabnzbd"
       host     = "10.0.40.20"
       hostname = "sabnzbd.${var.cf_domain}"
       port     = 18080
     },
-    # {
-    #   protocol = "http"
-    #   name     = "wallos"
-    #   # host     = "localhost"
-    #   host = "wallos"
-    #   hostname = "wallos.${var.cf_domain}"
-    #   # port     = 10110
-    #   port     = 80
-    # },
+    {
+      protocol = "http"
+      name     = "sonarr"
+      host     = "10.0.40.20"
+      hostname = "sonarr.${var.cf_domain}"
+      port     = 8989
+    }
+  ]
+}
+
+locals {
+  other_dns = [
     {
       # HomePage
-      protocol = "http"
-      name     = "@" #! root
-      host     = "10.0.40.20"
-      hostname = "${var.cf_domain}"
-      port     = 11111
+      name    = "*.ts"
+      proxied = false
+      content = "traefik.koala-dominant.ts.net"
+      type    = "CNAME"
+      ttl     = 1
     },
   ]
 }
