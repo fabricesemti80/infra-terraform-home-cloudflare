@@ -99,3 +99,42 @@ resource "cloudflare_dns_record" "dns_records" {
   ttl      = each.value.ttl
   comment  = "Managed by Terraform"
 }
+
+
+/* -------------------------------------------------------------------------- */
+/*                      Application Access Configurations                     */
+/* -------------------------------------------------------------------------- */
+
+
+# Create a specific application for Home Assistant that bypasses authentication
+resource "cloudflare_zero_trust_access_policy" "example_zero_trust_access_policy" {
+account_id = var.cf_account_id
+decision = "bypass" # Valid values are: "allow", "deny", "non_identity", "bypass"
+include = [{
+everyone = {}
+}]
+name = "Application Bypass"
+session_duration = "30m"
+}
+
+
+# Create a specific application for Home Assistant that bypasses authentication
+resource "cloudflare_zero_trust_access_application" "hass" {
+zone_id = var.cf_zone_id
+name = "Home Assistant"
+domain = "hass.fabricesemti.dev"
+type = "self_hosted"
+session_duration = "24h"
+skip_interstitial = true
+
+
+# policies = [{
+# id =cloudflare_zero_trust_access_policy.example_zero_trust_access_policy .id
+# precedence = 0
+# }]
+
+
+depends_on = [
+cloudflare_zero_trust_access_policy.example_zero_trust_access_policy
+]
+}
