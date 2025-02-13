@@ -17,16 +17,6 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "tunnel" {
   tunnel_secret = random_password.tunnel_secret.result
 }
 
-output "tunnel_id" {
-  description = "ID of the Cloudflare Tunnel"
-  value       = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
-}
-
-output "tunnel_name" {
-  description = "Name of the Cloudflare Tunnel"
-  value       = cloudflare_zero_trust_tunnel_cloudflared.tunnel.name
-}
-
 # Tunnel credentials stored locally
 
 resource "local_file" "tunnel_credentials" {
@@ -70,6 +60,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "tunnel_config" {
   tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
 
   config = {
+
     ingress = concat(
       [
         for domain in local.tunnel_dns : {
@@ -85,6 +76,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "tunnel_config" {
     )
   }
 }
+
 
 /* -------------------------------------------------------------------------- */
 /*                           Standalone DNS records                           */
@@ -138,3 +130,4 @@ depends_on = [
 cloudflare_zero_trust_access_policy.example_zero_trust_access_policy
 ]
 }
+

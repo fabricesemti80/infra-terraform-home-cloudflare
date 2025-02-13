@@ -1,6 +1,8 @@
 # Define locals for hostname, domain, and port
 locals {
   tunnel_dns = [
+
+    /* --------------------------------- Use IP --------------------------------- */
     {
       # HomePage
       protocol = "http"
@@ -78,7 +80,22 @@ locals {
       host     = "10.0.40.20"
       hostname = "sonarr.${var.cf_domain}"
       port     = 8989
-    }
+    },
+    # # /* --------------------------------- Use DNS --------------------------------- */
+    # {
+    #   protocol = "https"
+    #   name     = "@" #! root
+    #   host     = "tunnel-proxy-traefik"
+    #   hostname =
+    #   port     = ""
+    # },
+    # {
+    #   protocol = "https"
+    #   name     = "*" #! wildcard
+    #   host     = "tunnel-proxy-traefik"
+    #   hostname = "*.${var.cf_domain}"
+    #   port     = "null"
+    # },
   ]
 }
 
@@ -86,9 +103,9 @@ locals {
   other_dns = [
     {
       # HomePage
-      name    = "*.ts"
-      proxied = false
-      content = "traefik.koala-dominant.ts.net"
+      name    = "external"
+      proxied = true
+      content = "${cloudflare_zero_trust_tunnel_cloudflared.tunnel.id}.cfargotunnel.com"
       type    = "CNAME"
       ttl     = 1
     },
