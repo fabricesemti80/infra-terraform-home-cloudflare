@@ -12,6 +12,13 @@ locals {
     },
     {
       protocol = "http"
+      name     = "atlantis"
+      host     = "10.0.40.21"
+      hostname = "grafana.${var.cf_domain}"
+      port     = 4141
+    },
+    {
+      protocol = "http"
       name     = "grafana"
       host     = "10.0.40.20"
       hostname = "grafana.${var.cf_domain}"
