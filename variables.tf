@@ -58,7 +58,7 @@ variable "hass_domain" {
 # Zero Trust Variables
 #------------------------------------------------------------------------------
 
-variable "tf_token_app_terraform_io" {
-  description = "Token for Terraform Cloud or Enterprise"
-  type        = string
-}
+# variable "tf_token_app_terraform_io" {
+#   description = "Token for Terraform Cloud or Enterprise"
+#   type        = string
+# }
