@@ -48,11 +48,11 @@ variable "credentials_file_path" {
 # Application Configuration Variables
 #------------------------------------------------------------------------------
 
-variable "hass_domain" {
-  description = "Domain for Home Assistant application"
-  type        = string
-  default     = "hass.example.com"
-}
+# variable "hass_domain" {
+#  description = "Domain for Home Assistant application"
+#   type        = string
+#   default     = "hass.example.com"
+# }
 
 #------------------------------------------------------------------------------
 # Zero Trust Variables
