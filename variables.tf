@@ -50,6 +50,18 @@ variable "credentials_file_path" {
   sensitive   = false
 }
 
+variable "hcp_client_id" {
+  description = "Value for HCP_CLIENT_ID"
+  type =  string
+  sensitive = true
+}
+
+variable "hcp_client_secret" {
+  description = "Value for HCP_CLIENT_SECRET"
+  type =  string
+  sensitive = true
+}
+
 #------------------------------------------------------------------------------
 # Application Configuration Variables
 #------------------------------------------------------------------------------
