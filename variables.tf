@@ -80,3 +80,9 @@ variable "hcp_client_secret" {
 #   description = "Token for Terraform Cloud or Enterprise"
 #   type        = string
 # }
+
+variable "hcp_secret_app_name" {
+  description = "Name of the HCP App storing secrets"
+  type        = string
+  default     = "tf-cloudflare" #TODO: move to .tfvars
+}

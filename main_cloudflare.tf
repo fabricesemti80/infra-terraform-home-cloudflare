@@ -10,7 +10,7 @@ locals {
       hostname = var.cf_domain
       port     = 11111
     },
-      {
+    {
       protocol = "http"
       name     = "atlantis"
       host     = "10.0.40.20"
@@ -122,24 +122,48 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "tunnel" {
 
 # Tunnel credentials stored locally
 
-resource "local_file" "tunnel_credentials" {
-  content = jsonencode({
+# resource "local_file" "tunnel_credentials" {
+#   content = jsonencode({
+#     AccountTag   = var.cf_account_id
+#     TunnelID     = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
+#     TunnelName   = cloudflare_zero_trust_tunnel_cloudflared.tunnel.name
+#     TunnelSecret = random_password.tunnel_secret.result
+#   })
+#   filename = pathexpand("${var.credentials_file_path}/${cloudflare_zero_trust_tunnel_cloudflared.tunnel.id}.json")
+# }
+
+# resource "local_file" "tunnel_config" {
+#   content = yamlencode({
+#     tunnel           = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
+#     credentials-file = "${var.credentials_file_path}/${cloudflare_zero_trust_tunnel_cloudflared.tunnel.id}.json"
+#   })
+#   filename = pathexpand("${var.credentials_file_path}/config.yaml")
+# }
+
+# Store tunnel credentials in HCP Vault
+
+resource "hcp_vault_secrets_secret" "tunnel_credential" {
+  app_name    = var.hcp_secret_app_name
+  secret_name = replace("${var.tunnel_name}_credential", "-", "_")
+  secret_value = jsonencode({
     AccountTag   = var.cf_account_id
     TunnelID     = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
     TunnelName   = cloudflare_zero_trust_tunnel_cloudflared.tunnel.name
     TunnelSecret = random_password.tunnel_secret.result
   })
-  filename = pathexpand("${var.credentials_file_path}/${cloudflare_zero_trust_tunnel_cloudflared.tunnel.id}.json")
+
 }
 
-resource "local_file" "tunnel_config" {
-  content = yamlencode({
+# Store tunnel config in HCP Vault
+
+resource "hcp_vault_secrets_secret" "tunnel_config" {
+  app_name    = var.hcp_secret_app_name
+  secret_name = replace("${var.tunnel_name}_config", "-", "_")
+  secret_value = yamlencode({
     tunnel           = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
     credentials-file = "${var.credentials_file_path}/${cloudflare_zero_trust_tunnel_cloudflared.tunnel.id}.json"
   })
-  filename = pathexpand("${var.credentials_file_path}/config.yaml")
 }
-
 /* ---------------------------------------------------------------------------------------- */
 /*                 # Add DNS records and ingresses for each subdomain entry                 */
 /* -------------------------------------------------------------------------- ------------- */
