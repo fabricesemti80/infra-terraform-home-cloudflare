@@ -39,6 +39,18 @@ variable "tunnel_secret" {
   sensitive   = true
 }
 
+variable "terraformed_docker_tunnel_config" {
+  description = "Configuration for the Terraformed Docker tunnel."
+  type        = string
+  default = ""
+}
+
+variable "terraformed_docker_tunnel_credential" {
+  description = "Credential for the Terraformed Docker tunnel."
+  type        = string
+  default = ""
+}
+
 # ---------------------------------------------------------------------------- #
 # HCP Vault Configuration Variables
 # ---------------------------------------------------------------------------- #
