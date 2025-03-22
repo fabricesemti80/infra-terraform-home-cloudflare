@@ -1,6 +1,7 @@
-/* -------------------------------------------------------------------------- */
-/*                                Locals                                      */
-/* -------------------------------------------------------------------------- */
+# ---------------------------------------------------------------------------- #
+# Local Variables
+# ---------------------------------------------------------------------------- #
+
 locals {
   tunnel_dns = [
     {
@@ -88,9 +89,7 @@ locals {
       port     = 8989
     },
   ]
-}
 
-locals {
   other_dns = [
     {
       name    = "external"
@@ -102,9 +101,9 @@ locals {
   ]
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                Tunnel config                               */
-/* -------------------------------------------------------------------------- */
+# ---------------------------------------------------------------------------- #
+# Tunnel Configuration
+# ---------------------------------------------------------------------------- #
 
 resource "random_password" "tunnel_secret" {
   length  = 32
@@ -120,28 +119,6 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "tunnel" {
   tunnel_secret = random_password.tunnel_secret.result
 }
 
-# Tunnel credentials stored locally
-
-# resource "local_file" "tunnel_credentials" {
-#   content = jsonencode({
-#     AccountTag   = var.cf_account_id
-#     TunnelID     = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
-#     TunnelName   = cloudflare_zero_trust_tunnel_cloudflared.tunnel.name
-#     TunnelSecret = random_password.tunnel_secret.result
-#   })
-#   filename = pathexpand("${var.credentials_file_path}/${cloudflare_zero_trust_tunnel_cloudflared.tunnel.id}.json")
-# }
-
-# resource "local_file" "tunnel_config" {
-#   content = yamlencode({
-#     tunnel           = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
-#     credentials-file = "${var.credentials_file_path}/${cloudflare_zero_trust_tunnel_cloudflared.tunnel.id}.json"
-#   })
-#   filename = pathexpand("${var.credentials_file_path}/config.yaml")
-# }
-
-# Store tunnel credentials in HCP Vault
-
 resource "hcp_vault_secrets_secret" "tunnel_credential" {
   app_name    = var.hcp_secret_app_name
   secret_name = replace("${var.tunnel_name}_credential", "-", "_")
@@ -151,22 +128,11 @@ resource "hcp_vault_secrets_secret" "tunnel_credential" {
     TunnelName   = cloudflare_zero_trust_tunnel_cloudflared.tunnel.name
     TunnelSecret = random_password.tunnel_secret.result
   })
-
 }
 
-# Store tunnel config in HCP Vault
-
-resource "hcp_vault_secrets_secret" "tunnel_config" {
-  app_name    = var.hcp_secret_app_name
-  secret_name = replace("${var.tunnel_name}_config", "-", "_")
-  secret_value = yamlencode({
-    tunnel           = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
-    credentials-file = "${var.credentials_file_path}/${cloudflare_zero_trust_tunnel_cloudflared.tunnel.id}.json"
-  })
-}
-/* ---------------------------------------------------------------------------------------- */
-/*                 # Add DNS records and ingresses for each subdomain entry                 */
-/* -------------------------------------------------------------------------- ------------- */
+# ---------------------------------------------------------------------------- #
+# DNS Records
+# ---------------------------------------------------------------------------- #
 
 resource "cloudflare_dns_record" "tunnel_dns_records" {
   for_each = { for domain in local.tunnel_dns : domain.name => domain }
@@ -175,7 +141,7 @@ resource "cloudflare_dns_record" "tunnel_dns_records" {
   content  = "${cloudflare_zero_trust_tunnel_cloudflared.tunnel.id}.cfargotunnel.com"
   type     = "CNAME"
   proxied  = true
-  ttl      = 1 # Auto-managed
+  ttl      = 1
   comment  = "Managed by Terraform"
 }
 
@@ -200,9 +166,6 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "tunnel_config" {
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/*                           Standalone DNS records                           */
-/* -------------------------------------------------------------------------- */
 resource "cloudflare_dns_record" "dns_records" {
   for_each = { for domain in local.other_dns : domain.name => domain }
   zone_id  = var.cf_zone_id
@@ -214,9 +177,9 @@ resource "cloudflare_dns_record" "dns_records" {
   comment  = "Managed by Terraform"
 }
 
-/* -------------------------------------------------------------------------- */
-/*                      Application Access Configurations                     */
-/* -------------------------------------------------------------------------- */
+# ---------------------------------------------------------------------------- #
+# Zero Trust Access Configurations
+# ---------------------------------------------------------------------------- #
 
 resource "cloudflare_zero_trust_access_policy" "example_zero_trust_access_policy" {
   account_id       = var.cf_account_id

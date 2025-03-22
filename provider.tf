@@ -11,12 +11,12 @@ terraform {
     }
   }
 
-  # backend "remote" {
-  #   organization = "homelab-fsemti"
-  #   workspaces {
-  #     name = "tf-cloudflare"
-  #   }
-  # }
+  backend "remote" {
+    organization = "homelab-fsemti"
+    workspaces {
+      name = "tf-cloudflare"
+    }
+  }
 
 }
 
