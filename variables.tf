@@ -5,19 +5,16 @@
 variable "cf_account_id" {
   description = "The ID of the Cloudflare account."
   type        = string
-  sensitive   = false
 }
 
 variable "cf_zone_id" {
   description = "The ID of the Cloudflare zone."
   type        = string
-  sensitive   = false
 }
 
 variable "cf_domain" {
   description = "The base domain managed by Cloudflare."
   type        = string
-  sensitive   = false
 }
 
 variable "cf_api_token" {
@@ -34,7 +31,6 @@ variable "tunnel_name" {
   description = "The name assigned to the Cloudflare tunnel."
   type        = string
   default     = "terraformed-docker-tunnel"
-  sensitive   = false
 }
 
 variable "tunnel_secret" {
@@ -50,7 +46,6 @@ variable "tunnel_secret" {
 variable "hcp_client_id" {
   description = "Client ID for HCP authentication."
   type        = string
-  sensitive   = true
 }
 
 variable "hcp_client_secret" {
