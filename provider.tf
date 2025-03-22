@@ -12,6 +12,7 @@ terraform {
       name = "tf-cloudflare"
     }
   }
+
 }
 
 provider "cloudflare" {
