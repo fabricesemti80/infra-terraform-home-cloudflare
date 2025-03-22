@@ -10,6 +10,13 @@ locals {
       hostname = var.cf_domain
       port     = 11111
     },
+      {
+      protocol = "http"
+      name     = "atlantis"
+      host     = "10.0.40.20"
+      hostname = "grafana.${var.cf_domain}"
+      port     = 4141
+    },
     {
       protocol = "http"
       name     = "grafana"
@@ -193,6 +200,19 @@ resource "cloudflare_zero_trust_access_policy" "example_zero_trust_access_policy
   include          = [{ everyone = {} }]
   name             = "Application Bypass"
   session_duration = "30m"
+}
+
+resource "cloudflare_zero_trust_access_application" "atlantis" {
+  zone_id           = var.cf_zone_id
+  name              = "Atlantis"
+  domain            = "atlantis.${var.cf_domain}"
+  type              = "self_hosted"
+  session_duration  = "24h"
+  skip_interstitial = true
+
+  depends_on = [
+    cloudflare_zero_trust_access_policy.example_zero_trust_access_policy
+  ]
 }
 
 resource "cloudflare_zero_trust_access_application" "hass" {
