@@ -14,7 +14,7 @@ locals {
     {
       protocol = "http"
       name     = "atlantis"
-      host     = "10.0.40.20"
+      host     = "10.0.40.21"
       hostname = "atlantis.${var.cf_domain}"
       port     = 4141
     },
