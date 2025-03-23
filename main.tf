@@ -185,7 +185,7 @@ resource "cloudflare_zero_trust_access_policy" "example_zero_trust_access_policy
   account_id       = var.cf_account_id
   decision         = "bypass"
   include          = [{ everyone = {} }]
-  name             = "Application Bypass"
+  name             = "Application Bypass TF"
   session_duration = "30m"
 }
 
