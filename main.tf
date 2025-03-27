@@ -11,13 +11,13 @@ locals {
       hostname = var.cf_domain
       port     = 11111
     },
-    {
-      protocol = "http"
-      name     = "atlantis"
-      host     = "10.0.40.21"
-      hostname = "atlantis.${var.cf_domain}"
-      port     = 4141
-    },
+    # {
+    #   protocol = "http"
+    #   name     = "atlantis"
+    #   host     = "10.0.40.21"
+    #   hostname = "atlantis.${var.cf_domain}"
+    #   port     = 4141
+    # },
     {
       protocol = "http"
       name     = "grafana"
@@ -31,6 +31,13 @@ locals {
       host     = "10.0.40.21"
       hostname = "hass.${var.cf_domain}"
       port     = 8123
+    },
+    {
+      protocol = "http"
+      name     = "jenkins"
+      host     = "10.0.40.22"
+      hostname = "jenkins.${var.cf_domain}"
+      port     = 8080
     },
     {
       protocol = "http"
