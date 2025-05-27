@@ -34,6 +34,13 @@ locals {
     },
     {
       protocol = "http"
+      name     = "jellyfin"
+      host     = "10.0.40.20"
+      hostname = "jellyfin.${var.cf_domain}"
+      port     = 8096
+    },
+    {
+      protocol = "http"
       name     = "jenkins"
       host     = "10.0.40.22"
       hostname = "jenkins.${var.cf_domain}"
