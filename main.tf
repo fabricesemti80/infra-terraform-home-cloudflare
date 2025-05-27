@@ -229,15 +229,15 @@ resource "cloudflare_zero_trust_access_application" "hass" {
   ]
 }
 
-resource "cloudflare_zero_trust_access_application" "jellyfin" {
-  zone_id           = var.cf_zone_id
-  name              = "Jellyfin"
-  domain            = "jellyfin.${var.cf_domain}"
-  type              = "self_hosted"
-  session_duration  = "24h"
-  skip_interstitial = true
+# resource "cloudflare_zero_trust_access_application" "jellyfin" {
+#   zone_id           = var.cf_zone_id
+#   name              = "Jellyfin"
+#   domain            = "jellyfin.${var.cf_domain}"
+#   type              = "self_hosted"
+#   session_duration  = "24h"
+#   skip_interstitial = true
 
-  depends_on = [
-    cloudflare_zero_trust_access_policy.example_zero_trust_access_policy
-  ]
-}
+#   depends_on = [
+#     cloudflare_zero_trust_access_policy.example_zero_trust_access_policy
+#   ]
+# }
