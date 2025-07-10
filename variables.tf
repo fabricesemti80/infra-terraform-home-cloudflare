@@ -69,5 +69,5 @@ variable "hcp_client_secret" {
 variable "hcp_secret_app_name" {
   description = "Name of the HCP application used for storing secrets."
   type        = string
-  default     = "tf-cloudflare"
+  default     = "fs-secrets"
 }
