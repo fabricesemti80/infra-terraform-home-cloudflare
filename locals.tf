@@ -44,6 +44,13 @@ locals {
     },
     {
       protocol = "http"
+      name     = "kestra"
+      host     = "10.0.40.21"
+      hostname = "kestra.${var.cf_domain}"
+      port     = 8080
+    },
+    {
+      protocol = "http"
       name     = "n8n"
       host     = "10.0.40.21"
       hostname = "n8n.${var.cf_domain}"
