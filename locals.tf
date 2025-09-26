@@ -1,12 +1,19 @@
+# ---------------------------------------------------------------------------- #
+# Local Values Configuration
+# ---------------------------------------------------------------------------- #
+
 locals {
+  # DNS configuration for tunnel endpoints
+  # Defines the services exposed through the Cloudflare tunnel
   tunnel_dns = [
     {
       protocol = "http"
-      name     = "@" #! root
+      name     = "@" # Root domain
       host     = "10.0.40.20"
       hostname = var.cf_docker_domain
       port     = 11111
     },
+    # Commented out: Atlantis service (uncomment if needed)
     # {
     #   protocol = "http"
     #   name     = "atlantis"
@@ -107,6 +114,7 @@ locals {
     },
   ]
 
+  # Additional DNS records not related to tunnels
   other_dns = [
     {
       name    = "external"
@@ -117,6 +125,8 @@ locals {
     },
   ]
 
+  # Zero Trust applications configuration
+  # Services that require authentication through Cloudflare Access
   zero_trust_applications = {
     atlantis = {
       name             = "Atlantis"

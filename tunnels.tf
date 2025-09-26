@@ -2,6 +2,7 @@
 # Tunnel Configuration
 # ---------------------------------------------------------------------------- #
 
+# Main tunnel for routing traffic to internal services
 resource "cloudflare_zero_trust_tunnel_cloudflared" "tunnel" {
   account_id    = var.cf_account_id
   name          = var.tunnel_name
@@ -12,7 +13,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "tunnel" {
   }
 }
 
-# Random secrets for the new tunnels
+# Random secrets for additional tunnels
 resource "random_password" "docker_tunnel_secret" {
   length  = 32
   special = false
@@ -23,7 +24,7 @@ resource "random_password" "kubernetes_tunnel_secret" {
   special = false
 }
 
-# Docker tunnel
+# Docker tunnel for containerized services
 resource "cloudflare_zero_trust_tunnel_cloudflared" "docker_tunnel" {
   account_id    = var.cf_account_id
   name          = "tf-docker-tunnel"
@@ -34,7 +35,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "docker_tunnel" {
   }
 }
 
-# Kubernetes tunnel
+# Kubernetes tunnel for cluster services
 resource "cloudflare_zero_trust_tunnel_cloudflared" "kubernetes_tunnel" {
   account_id    = var.cf_account_id
   name          = "tf-kubernetes-tunnel"
@@ -45,7 +46,11 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "kubernetes_tunnel" {
   }
 }
 
-# Write tunnel tokens to config files
+# ---------------------------------------------------------------------------- #
+# Tunnel Token Files
+# ---------------------------------------------------------------------------- #
+
+# Write tunnel credentials to local JSON files for cloudflared
 resource "local_file" "docker_tunnel_token" {
   filename = "${path.module}/${var.config_dir}/docker-tunnel-token.json"
   content  = jsonencode({
@@ -64,7 +69,7 @@ resource "local_file" "kubernetes_tunnel_token" {
   })
 }
 
-# Generate proper tunnel tokens (base64 encoded JSON)
+# Generate base64-encoded tunnel tokens for cloudflared authentication
 resource "local_file" "docker_cloudflared_token" {
   content  = base64encode(jsonencode({
     a = var.cf_account_id

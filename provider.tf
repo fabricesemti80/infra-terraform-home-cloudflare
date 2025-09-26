@@ -1,3 +1,7 @@
+# ---------------------------------------------------------------------------- #
+# Terraform Configuration
+# ---------------------------------------------------------------------------- #
+
 terraform {
   required_providers {
     cloudflare = {
@@ -21,20 +25,28 @@ terraform {
     }
   }
 
+  # Remote backend configuration for Terraform Cloud
+  # Uncomment and configure for remote state management
   # backend "remote" {
   #   organization = "homelab-fsemti"
   #   workspaces {
   #     name = "tf-cloudflare"
   #   }
   # }
-
 }
 
+# ---------------------------------------------------------------------------- #
+# Provider Configurations
+# ---------------------------------------------------------------------------- #
+
+# Cloudflare provider configuration
 provider "cloudflare" {
   api_token = var.cf_api_token
 }
 
-// Credentials can be set explicitly or via the environment variables HCP_CLIENT_ID and HCP_CLIENT_SECRET
+# HCP (HashiCorp Cloud Platform) provider configuration
+# Credentials can be set explicitly or via environment variables:
+# HCP_CLIENT_ID and HCP_CLIENT_SECRET
 provider "hcp" {
   client_id     = var.hcp_client_id
   client_secret = var.hcp_client_secret

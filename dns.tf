@@ -1,7 +1,9 @@
 # ---------------------------------------------------------------------------- #
-# DNS Records
+# DNS Records and Tunnel Configuration
 # ---------------------------------------------------------------------------- #
 
+# DNS records for tunnel endpoints
+# These CNAME records point to the Cloudflare tunnel for routing traffic
 resource "cloudflare_dns_record" "tunnel_dns_records" {
   for_each = { for domain in local.tunnel_dns : domain.name => domain }
   zone_id  = var.cf_zone_id
@@ -13,6 +15,8 @@ resource "cloudflare_dns_record" "tunnel_dns_records" {
   comment  = "Managed by Terraform"
 }
 
+# Tunnel configuration defining ingress rules
+# Routes traffic from hostnames to internal services via the tunnel
 resource "cloudflare_zero_trust_tunnel_cloudflared_config" "tunnel_config" {
   account_id = var.cf_account_id
   tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
@@ -34,6 +38,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "tunnel_config" {
   }
 }
 
+# Additional DNS records for other services
 resource "cloudflare_dns_record" "dns_records" {
   for_each = { for domain in local.other_dns : domain.name => domain }
   zone_id  = var.cf_zone_id
