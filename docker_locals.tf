@@ -6,6 +6,8 @@
 # Add Docker-specific service configurations here when needed
 
 locals {
+  docker_domain = var.cf_docker_domain
+
   # Docker tunnel DNS configuration
   # Define Docker services to be exposed through the Docker tunnel
   docker_tunnel_dns = [
@@ -14,7 +16,7 @@ locals {
     #   protocol = "http"
     #   name     = "docker-service"
     #   host     = "docker-host"
-    #   hostname = "service.${var.cf_docker_domain}"
+    #   hostname = "service.${local.docker_domain}"
     #   port     = 8080
     # }
   ]

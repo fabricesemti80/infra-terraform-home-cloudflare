@@ -3,6 +3,7 @@
 # ---------------------------------------------------------------------------- #
 
 locals {
+  tunnel_domain = var.cf_docker_domain
   # DNS configuration for main tunnel endpoints
   # Defines the services exposed through the main Cloudflare tunnel
   tunnel_dns = [
@@ -10,7 +11,7 @@ locals {
       protocol = "http"
       name     = "@" # Root domain
       host     = "10.0.40.20"
-      hostname = var.cf_docker_domain
+      hostname = local.tunnel_domain
       port     = 11111
     },
     # Commented out: Atlantis service (uncomment if needed)
@@ -18,98 +19,98 @@ locals {
     #   protocol = "http"
     #   name     = "atlantis"
     #   host     = "10.0.40.21"
-    #   hostname = "atlantis.${var.cf_docker_domain}"
+    #   hostname = "atlantis.${local.tunnel_domain}"
     #   port     = 4141
     # },
     {
       protocol = "http"
       name     = "grafana"
       host     = "10.0.40.20"
-      hostname = "grafana.${var.cf_docker_domain}"
+      hostname = "grafana.${local.tunnel_domain}"
       port     = 3000
     },
     {
       protocol = "http"
       name     = "hass"
       host     = "10.0.40.21"
-      hostname = "hass.${var.cf_docker_domain}"
+      hostname = "hass.${local.tunnel_domain}"
       port     = 8123
     },
     {
       protocol = "http"
       name     = "jellyfin"
       host     = "10.0.40.20"
-      hostname = "jellyfin.${var.cf_docker_domain}"
+      hostname = "jellyfin.${local.tunnel_domain}"
       port     = 8096
     },
     {
       protocol = "http"
       name     = "jellyseerr"
       host     = "10.0.40.20"
-      hostname = "jellyseerr.${var.cf_docker_domain}"
+      hostname = "jellyseerr.${local.tunnel_domain}"
       port     = 5056
     },
     {
       protocol = "http"
       name     = "kestra"
       host     = "10.0.40.21"
-      hostname = "kestra.${var.cf_docker_domain}"
+      hostname = "kestra.${local.tunnel_domain}"
       port     = 8080
     },
     {
       protocol = "http"
       name     = "n8n"
       host     = "10.0.40.21"
-      hostname = "n8n.${var.cf_docker_domain}"
+      hostname = "n8n.${local.tunnel_domain}"
       port     = 5678
     },
     {
       protocol = "http"
       name     = "overseerr"
       host     = "10.0.40.20"
-      hostname = "overseerr.${var.cf_docker_domain}"
+      hostname = "overseerr.${local.tunnel_domain}"
       port     = 5055
     },
     {
       protocol = "http"
       name     = "plex"
       host     = "10.0.40.2"
-      hostname = "plex.${var.cf_docker_domain}"
+      hostname = "plex.${local.tunnel_domain}"
       port     = 32400
     },
     {
       protocol = "http"
       name     = "prometheus"
       host     = "10.0.40.20"
-      hostname = "prometheus.${var.cf_docker_domain}"
+      hostname = "prometheus.${local.tunnel_domain}"
       port     = 9090
     },
     {
       protocol = "http"
       name     = "prowlarr"
       host     = "10.0.40.20"
-      hostname = "prowlarr.${var.cf_docker_domain}"
+      hostname = "prowlarr.${local.tunnel_domain}"
       port     = 9696
     },
     {
       protocol = "http"
       name     = "radarr"
       host     = "10.0.40.20"
-      hostname = "radarr.${var.cf_docker_domain}"
+      hostname = "radarr.${local.tunnel_domain}"
       port     = 7878
     },
     {
       protocol = "http"
       name     = "sabnzbd"
       host     = "10.0.40.20"
-      hostname = "sabnzbd.${var.cf_docker_domain}"
+      hostname = "sabnzbd.${local.tunnel_domain}"
       port     = 18080
     },
     {
       protocol = "http"
       name     = "sonarr"
       host     = "10.0.40.20"
-      hostname = "sonarr.${var.cf_docker_domain}"
+      hostname = "sonarr.${local.tunnel_domain}"
       port     = 8989
     },
   ]
