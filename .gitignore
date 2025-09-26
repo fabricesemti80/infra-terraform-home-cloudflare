@@ -40,3 +40,4 @@ terraform.rc
 **/.envrc
 **.plan
 .vscode/settings.json
+.DS_Store

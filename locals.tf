@@ -37,10 +37,10 @@ locals {
     },
     {
       protocol = "http"
-      name     = "jenkins"
-      host     = "10.0.40.22"
-      hostname = "jenkins.${var.cf_domain}"
-      port     = 8080
+      name     = "jellyseerr"
+      host     = "10.0.40.20"
+      hostname = "jellyseerr.${var.cf_domain}"
+      port     = 5056
     },
     {
       protocol = "http"
