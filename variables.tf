@@ -12,7 +12,7 @@ variable "cf_zone_id" {
   type        = string
 }
 
-variable "cf_domain" {
+variable "cf_docker_domain" {
   description = "The base domain managed by Cloudflare."
   type        = string
 }

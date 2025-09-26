@@ -1,6 +1,6 @@
 cf_account_id = "example-cloudflare-account-id"
 cf_zone_id    = "example-cloudflare-zone-id"
-cf_domain     = "example.com"
+cf_docker_domain     = "example.com"
 cf_api_token  = "example-cloudflare-api-token"
 tunnel_secret = "example-tunnel-secret"
 tunnel_name   = "example-tunnel-name"

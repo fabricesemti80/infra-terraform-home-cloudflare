@@ -16,7 +16,7 @@ pipeline {
         TF_VAR_cf_api_token = "${CF_API_TOKEN}"
         TF_VAR_cf_zone_id = "${CF_ZONE_ID}"
         TF_VAR_cf_account_id = "${cf_account_id}"
-        TF_VAR_cf_domain = "${CF_DOMAIN}"
+        TF_VAR_cf_docker_domain = "${CF_DOMAIN}"
         TF_VAR_tunnel_id_docker = "${TUNNEL_ID_DOCKER}"
         TF_VAR_tunnel_secret_docker = "${TUNNEL_SECRET_DOCKER}"
     }
