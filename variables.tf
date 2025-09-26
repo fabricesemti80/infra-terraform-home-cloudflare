@@ -71,3 +71,9 @@ variable "hcp_secret_app_name" {
   type        = string
   default     = "fs-secrets"
 }
+
+variable "config_dir" {
+  description = "Directory for configuration files."
+  type        = string
+  default     = "config"
+}

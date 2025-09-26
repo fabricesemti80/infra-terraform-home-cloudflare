@@ -41,3 +41,4 @@ terraform.rc
 **.plan
 .vscode/settings.json
 .DS_Store
+config/**
