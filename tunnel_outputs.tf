@@ -24,7 +24,39 @@ output "all_tunnel_ids" {
   description = "Map of all tunnel IDs by tunnel type"
   value = {
     main       = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
-    docker     = cloudflare_zero_trust_tunnel_cloudflared.docker_tunnel.id
-    kubernetes = cloudflare_zero_trust_tunnel_cloudflared.kubernetes_tunnel.id
+    docker     = module.docker_tunnel.tunnel_id
+    kubernetes = module.kubernetes_tunnel.tunnel_id
   }
+}
+
+# Docker Tunnel Outputs
+output "docker_tunnel_id" {
+  description = "ID of the Docker Cloudflare Tunnel"
+  value       = module.docker_tunnel.tunnel_id
+}
+
+output "docker_tunnel_name" {
+  description = "Name of the Docker Cloudflare Tunnel"
+  value       = module.docker_tunnel.tunnel_name
+}
+
+output "docker_tunnel_config_content" {
+  description = "YAML content for the Docker tunnel configuration file"
+  value       = module.docker_tunnel.tunnel_config_content
+}
+
+# Kubernetes Tunnel Outputs
+output "kubernetes_tunnel_id" {
+  description = "ID of the Kubernetes Cloudflare Tunnel"
+  value       = module.kubernetes_tunnel.tunnel_id
+}
+
+output "kubernetes_tunnel_name" {
+  description = "Name of the Kubernetes Cloudflare Tunnel"
+  value       = module.kubernetes_tunnel.tunnel_name
+}
+
+output "kubernetes_tunnel_config_content" {
+  description = "YAML content for the Kubernetes tunnel configuration file"
+  value       = module.kubernetes_tunnel.tunnel_config_content
 }

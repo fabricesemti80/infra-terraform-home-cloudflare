@@ -124,7 +124,7 @@ locals {
     {
       name    = "external"
       proxied = true
-      content = "${cloudflare_zero_trust_tunnel_cloudflared.docker_tunnel.id}.cfargotunnel.com"
+      content = "${module.docker_tunnel.tunnel_id}.cfargotunnel.com"
       type    = "CNAME"
       ttl     = 1
     },

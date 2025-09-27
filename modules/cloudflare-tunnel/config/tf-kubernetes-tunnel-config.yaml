@@ -1,0 +1,5 @@
+"credentials-file": "modules/cloudflare-tunnel/config/tf-kubernetes-tunnel-token.json"
+"ingress":
+- "hostname": null
+  "service": "http_status:404"
+"tunnel": "2720b0ae-c5fc-4173-853f-c45c762b7f3e"
