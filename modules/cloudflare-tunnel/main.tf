@@ -33,9 +33,10 @@ resource "cloudflare_zero_trust_tunnel_cloudflared" "tunnel" {
 resource "local_file" "tunnel_token" {
   filename = "${path.module}/../../${var.config_dir}/${var.tunnel_name}-token.json"
   content  = jsonencode({
-    name          = cloudflare_zero_trust_tunnel_cloudflared.tunnel.name
-    tunnel_secret = random_password.tunnel_secret.result
-    account_id    = var.cf_account_id
+    AccountTag    = var.cf_account_id
+    TunnelID      = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
+    TunnelName    = cloudflare_zero_trust_tunnel_cloudflared.tunnel.name
+    TunnelSecret  = random_password.tunnel_secret.result
   })
 }
 
