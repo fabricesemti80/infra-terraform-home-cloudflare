@@ -51,26 +51,7 @@ variable "terraformed_docker_tunnel_credential" {
   default = ""
 }
 
-# ---------------------------------------------------------------------------- #
-# HCP Vault Configuration Variables
-# ---------------------------------------------------------------------------- #
 
-variable "hcp_client_id" {
-  description = "Client ID for HCP authentication."
-  type        = string
-}
-
-variable "hcp_client_secret" {
-  description = "Client secret for HCP authentication."
-  type        = string
-  sensitive   = true
-}
-
-variable "hcp_secret_app_name" {
-  description = "Name of the HCP application used for storing secrets."
-  type        = string
-  default     = "fs-secrets"
-}
 
 variable "config_dir" {
   description = "Directory for configuration files."
