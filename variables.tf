@@ -7,7 +7,7 @@ variable "cf_account_id" {
   type        = string
 }
 
-variable "cf_zone_id" {
+variable "cf_docker_zone_id" {
   description = "The ID of the Cloudflare zone."
   type        = string
 }

@@ -42,3 +42,25 @@ resource "local_file" "docker_cloudflared_token" {
   }))
   filename = "${path.module}/${var.config_dir}/docker-cloudflared-token.txt"
 }
+
+# Generate Docker tunnel configuration file with ingress rules
+resource "local_file" "docker_tunnel_config" {
+  content = yamlencode({
+    tunnel          = cloudflare_zero_trust_tunnel_cloudflared.docker_tunnel.id
+    credentials-file = "${path.module}/${var.config_dir}/docker-tunnel-token.json"
+    ingress = concat(
+      [
+        for domain in local.docker_tunnel_dns : {
+          hostname = domain.hostname
+          service  = "${domain.protocol}://${domain.host}:${domain.port}"
+        }
+      ],
+      [
+        {
+          service = "http_status:404"
+        }
+      ]
+    )
+  })
+  filename = "${path.module}/${var.config_dir}/docker-tunnel-config.yaml"
+}

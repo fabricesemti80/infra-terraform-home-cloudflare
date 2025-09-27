@@ -19,3 +19,12 @@ output "tunnel_config_content" {
   })
   description = "YAML content for the main tunnel configuration file"
 }
+
+output "all_tunnel_ids" {
+  description = "Map of all tunnel IDs by tunnel type"
+  value = {
+    main       = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
+    docker     = cloudflare_zero_trust_tunnel_cloudflared.docker_tunnel.id
+    kubernetes = cloudflare_zero_trust_tunnel_cloudflared.kubernetes_tunnel.id
+  }
+}

@@ -4,7 +4,7 @@
 
 # Access policy that bypasses authentication for all users
 # This allows unrestricted access to the specified applications
-resource "cloudflare_zero_trust_access_policy" "example_zero_trust_access_policy" {
+resource "cloudflare_zero_trust_access_policy" "docker_zero_trust_access_policy" {
   account_id       = var.cf_account_id
   decision         = "bypass"
   include          = [{ everyone = {} }]
@@ -14,9 +14,9 @@ resource "cloudflare_zero_trust_access_policy" "example_zero_trust_access_policy
 
 # Zero Trust applications for self-hosted services
 # These applications require authentication unless bypassed by the policy above
-resource "cloudflare_zero_trust_access_application" "applications" {
+resource "cloudflare_zero_trust_access_application" "docker_applications" {
   for_each          = local.zero_trust_applications
-  zone_id           = var.cf_zone_id
+  zone_id           = var.cf_docker_zone_id
   name              = each.value.name
   domain            = each.value.domain
   type              = each.value.type
@@ -24,6 +24,6 @@ resource "cloudflare_zero_trust_access_application" "applications" {
   skip_interstitial = each.value.skip_interstitial
 
   policies = [{
-    id = cloudflare_zero_trust_access_policy.example_zero_trust_access_policy.id
+    id = cloudflare_zero_trust_access_policy.docker_zero_trust_access_policy.id
   }]
 }

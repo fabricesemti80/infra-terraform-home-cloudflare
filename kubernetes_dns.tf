@@ -9,7 +9,7 @@
 # Uncomment and modify when kubernetes_tunnel_dns locals are defined
 # resource "cloudflare_dns_record" "kubernetes_tunnel_dns_records" {
 #   for_each = { for domain in local.kubernetes_tunnel_dns : domain.name => domain }
-#   zone_id  = var.cf_zone_id
+#   zone_id  = var.cf_docker_zone_id
 #   name     = each.value.name
 #   content  = "${cloudflare_zero_trust_tunnel_cloudflared.kubernetes_tunnel.id}.cfargotunnel.com"
 #   type     = "CNAME"
@@ -45,7 +45,7 @@
 # Uncomment and modify when kubernetes_other_dns locals are defined
 # resource "cloudflare_dns_record" "kubernetes_dns_records" {
 #   for_each = { for domain in local.kubernetes_other_dns : domain.name => domain }
-#   zone_id  = var.cf_zone_id
+#   zone_id  = var.cf_docker_zone_id
 #   name     = each.value.name
 #   content  = each.value.content
 #   type     = each.value.type
