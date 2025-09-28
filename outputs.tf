@@ -1,6 +1,7 @@
-# ---------------------------------------------------------------------------- #
-# Main Tunnel Output Values
-# ---------------------------------------------------------------------------- #
+ /* -------------------------------------------------------------------------- */
+ /*                             Main Tunnel outputs                            */
+ /* -------------------------------------------------------------------------- */
+
 
 output "tunnel_id" {
   description = "ID of the main Cloudflare Tunnel"
@@ -29,7 +30,9 @@ output "all_tunnel_ids" {
   }
 }
 
-# Docker Tunnel Outputs
+/* -------------------------------------------------------------------------- */
+/*                            Docker Tunnel Outputs                           */
+/* -------------------------------------------------------------------------- */
 output "docker_tunnel_id" {
   description = "ID of the Docker Cloudflare Tunnel"
   value       = module.docker_tunnel.tunnel_id
@@ -45,7 +48,9 @@ output "docker_tunnel_config_content" {
   value       = module.docker_tunnel.tunnel_config_content
 }
 
-# Kubernetes Tunnel Outputs
+/* -------------------------------------------------------------------------- */
+/*                          Kubernetes Tunnel outputs                         */
+/* -------------------------------------------------------------------------- */
 output "kubernetes_tunnel_id" {
   description = "ID of the Kubernetes Cloudflare Tunnel"
   value       = module.kubernetes_tunnel.tunnel_id

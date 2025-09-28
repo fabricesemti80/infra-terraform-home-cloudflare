@@ -1,6 +1,8 @@
-# ---------------------------------------------------------------------------- #
-# Cloudflare Configuration Variables
-# ---------------------------------------------------------------------------- #
+
+/* -------------------------------------------------------------------------- */
+/*                     Cloudflare Configuration Variables                     */
+/* -------------------------------------------------------------------------- */
+
 
 variable "cf_account_id" {
   description = "The ID of the Cloudflare account."
@@ -23,9 +25,9 @@ variable "cf_api_token" {
   sensitive   = true
 }
 
-# ---------------------------------------------------------------------------- #
-# Tunnel Configuration Variables
-# ---------------------------------------------------------------------------- #
+/* -------------------------------------------------------------------------- */
+/*                       Main Tunnel Configuration Variables                       */
+/* -------------------------------------------------------------------------- */
 
 variable "tunnel_name" {
   description = "The name assigned to the Cloudflare tunnel."
@@ -50,8 +52,6 @@ variable "terraformed_docker_tunnel_credential" {
   type        = string
   default = ""
 }
-
-
 
 variable "config_dir" {
   description = "Directory for configuration files."
