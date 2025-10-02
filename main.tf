@@ -85,16 +85,16 @@ resource "cloudflare_dns_record" "docker_dns_records" {
 /* -------------------------------------------------------------------------- */
 
 # Kubernetes Tunnel Module
-module "kubernetes_tunnel" {
+module "portainer_tunnel" {
   source = "./modules/cloudflare-tunnel"
 
   cf_account_id = var.cf_account_id
-  tunnel_name   = "tf-kubernetes-tunnel"
+  tunnel_name   = "tf-portainer-tunnel"
   config_dir    = var.config_dir
 
   ingress_rules = concat(
     [
-      for domain in local.kubernetes_tunnel_dns : {
+      for domain in local.portainer_tunnel_dns : {
         hostname = domain.hostname
         service  = "${domain.protocol}://${domain.host}:${domain.port}"
       }

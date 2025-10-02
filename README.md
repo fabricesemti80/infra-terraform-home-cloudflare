@@ -129,12 +129,12 @@ The Docker tunnel exposes services running on Docker hosts. Default configuratio
 
 #### Kubernetes Tunnel
 The Kubernetes tunnel exposes services running on Kubernetes clusters. Default configuration:
-- **Tunnel Name**: `tf-kubernetes-tunnel`
+- **Tunnel Name**: `tf-portainer-tunnel`
 - **Configuration Directory**: `config/`
 - **Generated Files**:
-  - `config/tf-kubernetes-tunnel-token.json` - Tunnel credentials
-  - `config/tf-kubernetes-tunnel-config.yaml` - Tunnel configuration
-  - `config/tf-kubernetes-tunnel-cloudflared-token.txt` - Base64 encoded token
+  - `config/tf-portainer-tunnel-token.json` - Tunnel credentials
+  - `config/tf-portainer-tunnel-config.yaml` - Tunnel configuration
+  - `config/tf-portainer-tunnel-cloudflared-token.txt` - Base64 encoded token
 
 ## 🚀 Deployment
 

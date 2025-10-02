@@ -26,7 +26,7 @@ output "all_tunnel_ids" {
   value = {
     main       = cloudflare_zero_trust_tunnel_cloudflared.tunnel.id
     docker     = module.docker_tunnel.tunnel_id
-    kubernetes = module.kubernetes_tunnel.tunnel_id
+    portainer = module.portainer_tunnel.tunnel_id
   }
 }
 
@@ -51,17 +51,17 @@ output "docker_tunnel_config_content" {
 /* -------------------------------------------------------------------------- */
 /*                          Kubernetes Tunnel outputs                         */
 /* -------------------------------------------------------------------------- */
-output "kubernetes_tunnel_id" {
+output "portainer_tunnel_id" {
   description = "ID of the Kubernetes Cloudflare Tunnel"
-  value       = module.kubernetes_tunnel.tunnel_id
+  value       = module.portainer_tunnel.tunnel_id
 }
 
-output "kubernetes_tunnel_name" {
+output "portainer_tunnel_name" {
   description = "Name of the Kubernetes Cloudflare Tunnel"
-  value       = module.kubernetes_tunnel.tunnel_name
+  value       = module.portainer_tunnel.tunnel_name
 }
 
-output "kubernetes_tunnel_config_content" {
+output "portainer_tunnel_config_content" {
   description = "YAML content for the Kubernetes tunnel configuration file"
-  value       = module.kubernetes_tunnel.tunnel_config_content
+  value       = module.portainer_tunnel.tunnel_config_content
 }
