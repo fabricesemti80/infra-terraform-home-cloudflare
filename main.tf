@@ -26,6 +26,30 @@ module "primary_tunnel" {
   )
 }
 
+# DNS records for primary tunnel endpoints
+resource "cloudflare_dns_record" "primary_tunnel_dns_records" {
+  for_each = { for domain in local.primary_tunnel_dns : domain.name => domain }
+  zone_id  = var.cf_primary_zone_id
+  name     = each.value.name
+  content  = "${module.primary_tunnel.tunnel_id}.cfargotunnel.com"
+  type     = "CNAME"
+  proxied  = true
+  ttl      = 1
+  comment  = "Managed by Terraform - Primary Tunnel"
+}
+
+# Additional DNS records for primary tunnel services
+resource "cloudflare_dns_record" "primary_dns_records" {
+  for_each = { for domain in local.primary_other_dns : domain.name => domain }
+  zone_id  = var.cf_primary_zone_id
+  name     = each.value.name
+  content  = each.value.content
+  type     = each.value.type
+  proxied  = each.value.proxied
+  ttl      = each.value.ttl
+  comment  = "Managed by Terraform - Primary Tunnel Services"
+}
+
 # ============================================================================ #
 #                         SECONDARY TUNNEL CONFIGURATION                      #
 # ============================================================================ #
@@ -44,7 +68,7 @@ resource "cloudflare_zero_trust_access_policy" "secondary_zero_trust_access_poli
 # These applications require authentication unless bypassed by the policy above
 resource "cloudflare_zero_trust_access_application" "secondary_applications" {
   for_each          = local.secondary_zero_trust_applications
-  zone_id           = var.cf_docker_zone_id
+  zone_id           = var.cf_secondary_zone_id
   name              = each.value.name
   domain            = each.value.domain
   type              = each.value.type
@@ -82,7 +106,7 @@ module "secondary_tunnel" {
 # DNS records for secondary tunnel endpoints
 resource "cloudflare_dns_record" "secondary_tunnel_dns_records" {
   for_each = { for domain in local.secondary_tunnel_dns : domain.name => domain }
-  zone_id  = var.cf_docker_zone_id
+  zone_id  = var.cf_secondary_zone_id
   name     = each.value.name
   content  = "${module.secondary_tunnel.tunnel_id}.cfargotunnel.com"
   type     = "CNAME"
@@ -94,7 +118,7 @@ resource "cloudflare_dns_record" "secondary_tunnel_dns_records" {
 # Additional DNS records for secondary tunnel services
 resource "cloudflare_dns_record" "secondary_dns_records" {
   for_each = { for domain in local.secondary_other_dns : domain.name => domain }
-  zone_id  = var.cf_docker_zone_id
+  zone_id  = var.cf_secondary_zone_id
   name     = each.value.name
   content  = each.value.content
   type     = each.value.type

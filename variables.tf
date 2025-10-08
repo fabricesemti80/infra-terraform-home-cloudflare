@@ -8,13 +8,13 @@ variable "cf_account_id" {
   type        = string
 }
 
-variable "cf_docker_zone_id" {
-  description = "The ID of the Cloudflare zone."
+variable "cf_secondary_zone_id" {
+  description = "The ID of the Cloudflare zone for the secondary tunnel (fabricesemti.dev)."
   type        = string
 }
 
-variable "cf_docker_domain" {
-  description = "The base domain for Docker services managed by Cloudflare."
+variable "cf_secondary_domain" {
+  description = "The base domain for secondary tunnel services (fabricesemti.dev)."
   type        = string
 }
 
@@ -28,7 +28,15 @@ variable "cf_api_token" {
 #                      PRIMARY TUNNEL CONFIGURATION VARIABLES                 #
 # ============================================================================ #
 
-# Add primary tunnel-specific variables here when needed
+variable "cf_primary_zone_id" {
+  description = "The ID of the Cloudflare zone for the primary tunnel (fs-tech.uk)."
+  type        = string
+}
+
+variable "cf_primary_domain" {
+  description = "The base domain for primary tunnel services (fs-tech.uk)."
+  type        = string
+}
 
 # ============================================================================ #
 #                     SECONDARY TUNNEL CONFIGURATION VARIABLES                #

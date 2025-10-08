@@ -7,7 +7,7 @@ locals {
   #                          PRIMARY TUNNEL CONFIGURATION                        #
   # ============================================================================ #
 
-  primary_tunnel_domain = var.cf_docker_domain
+  primary_tunnel_domain = var.cf_primary_domain
 
   # Primary tunnel DNS configuration
   # Define Portainer/Kubernetes services to be exposed through the primary tunnel
@@ -20,6 +20,13 @@ locals {
     #   hostname = "k8s-service.${local.primary_tunnel_domain}"
     #   port     = 8080
     # }
+    {
+      protocol = "http"
+      name     = "overseerr"
+      host     = "overseerr"
+      hostname = "overseer.${local.primary_tunnel_domain}"
+      port     = 5055
+    }
   ]
 
   # Additional primary tunnel-specific DNS records
@@ -27,11 +34,11 @@ locals {
     # Add any additional DNS records for primary tunnel services here
   ]
 
-# ============================================================================ #
-#                         SECONDARY TUNNEL CONFIGURATION                      #
-# ============================================================================ #
+  # ============================================================================ #
+  #                         SECONDARY TUNNEL CONFIGURATION                      #
+  # ============================================================================ #
 
-  secondary_tunnel_domain = var.cf_docker_domain
+  secondary_tunnel_domain = var.cf_secondary_domain
 
   # Secondary tunnel DNS configuration
   # Define Docker services to be exposed through the secondary tunnel
@@ -160,21 +167,21 @@ locals {
   secondary_zero_trust_applications = {
     # atlantis = {
     #   name              = "Atlantis"
-    #   domain            = "atlantis.${var.cf_docker_domain}"
+    #   domain            = "atlantis.${var.cf_secondary_domain}"
     #   type              = "self_hosted"
     #   session_duration  = "24h"
     #   skip_interstitial = true
     # },
     # hass = {
     #   name              = "Home Assistant"
-    #   domain            = "hass.${var.cf_docker_domain}"
+    #   domain            = "hass.${var.cf_secondary_domain}"
     #   type              = "self_hosted"
     #   session_duration  = "24h"
     #   skip_interstitial = true
     # },
     jellyfin = {
       name              = "Jellyfin"
-      domain            = "jellyfin.${var.cf_docker_domain}"
+      domain            = "jellyfin.${var.cf_secondary_domain}"
       type              = "self_hosted"
       session_duration  = "24h"
       skip_interstitial = true
