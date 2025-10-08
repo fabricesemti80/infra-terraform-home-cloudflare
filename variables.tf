@@ -1,8 +1,7 @@
 
-/* -------------------------------------------------------------------------- */
-/*                     Cloudflare Configuration Variables                     */
-/* -------------------------------------------------------------------------- */
-
+# ============================================================================ #
+#                     CLOUDFLARE CONFIGURATION VARIABLES                      #
+# ============================================================================ #
 
 variable "cf_account_id" {
   description = "The ID of the Cloudflare account."
@@ -25,33 +24,33 @@ variable "cf_api_token" {
   sensitive   = true
 }
 
-/* -------------------------------------------------------------------------- */
-/*                       Main Tunnel Configuration Variables                       */
-/* -------------------------------------------------------------------------- */
+# ============================================================================ #
+#                      PRIMARY TUNNEL CONFIGURATION VARIABLES                 #
+# ============================================================================ #
 
-variable "tunnel_name" {
-  description = "The name assigned to the Cloudflare tunnel."
+# Add primary tunnel-specific variables here when needed
+
+# ============================================================================ #
+#                     SECONDARY TUNNEL CONFIGURATION VARIABLES                #
+# ============================================================================ #
+
+variable "terraformed_secondary_tunnel_config" {
+  description = "Configuration for the Terraformed secondary tunnel."
   type        = string
-  default     = "terraformed-docker-tunnel"
+  default     = ""
 }
 
-variable "tunnel_secret" {
-  description = "Secret key for the Cloudflare tunnel."
+variable "terraformed_secondary_tunnel_credential" {
+  description = "Credential for the Terraformed secondary tunnel."
   type        = string
-  sensitive   = true
+  default     = ""
 }
 
-variable "terraformed_docker_tunnel_config" {
-  description = "Configuration for the Terraformed Docker tunnel."
-  type        = string
-  default = ""
-}
 
-variable "terraformed_docker_tunnel_credential" {
-  description = "Credential for the Terraformed Docker tunnel."
-  type        = string
-  default = ""
-}
+
+# ============================================================================ #
+#                           SHARED CONFIGURATION                              #
+# ============================================================================ #
 
 variable "config_dir" {
   description = "Directory for configuration files."
