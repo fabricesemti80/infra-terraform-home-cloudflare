@@ -1,9 +1,12 @@
 
-# ============================================================================ #
-#                          PRIMARY TUNNEL CONFIGURATION                       #
-# ============================================================================ #
+
 
 locals {
+
+  # ============================================================================ #
+  #                          PRIMARY TUNNEL CONFIGURATION                        #
+  # ============================================================================ #
+
   primary_tunnel_domain = var.cf_docker_domain
 
   # Primary tunnel DNS configuration
@@ -23,13 +26,11 @@ locals {
   primary_other_dns = [
     # Add any additional DNS records for primary tunnel services here
   ]
-}
 
 # ============================================================================ #
 #                         SECONDARY TUNNEL CONFIGURATION                      #
 # ============================================================================ #
 
-locals {
   secondary_tunnel_domain = var.cf_docker_domain
 
   # Secondary tunnel DNS configuration
@@ -157,20 +158,20 @@ locals {
   # Zero Trust Applications Configuration for secondary tunnel services
   # Services that require authentication through Cloudflare Access
   secondary_zero_trust_applications = {
-    atlantis = {
-      name              = "Atlantis"
-      domain            = "atlantis.${var.cf_docker_domain}"
-      type              = "self_hosted"
-      session_duration  = "24h"
-      skip_interstitial = true
-    },
-    hass = {
-      name              = "Home Assistant"
-      domain            = "hass.${var.cf_docker_domain}"
-      type              = "self_hosted"
-      session_duration  = "24h"
-      skip_interstitial = true
-    },
+    # atlantis = {
+    #   name              = "Atlantis"
+    #   domain            = "atlantis.${var.cf_docker_domain}"
+    #   type              = "self_hosted"
+    #   session_duration  = "24h"
+    #   skip_interstitial = true
+    # },
+    # hass = {
+    #   name              = "Home Assistant"
+    #   domain            = "hass.${var.cf_docker_domain}"
+    #   type              = "self_hosted"
+    #   session_duration  = "24h"
+    #   skip_interstitial = true
+    # },
     jellyfin = {
       name              = "Jellyfin"
       domain            = "jellyfin.${var.cf_docker_domain}"
