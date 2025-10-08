@@ -24,7 +24,7 @@ locals {
       protocol = "http"
       name     = "overseerr"
       host     = "overseerr"
-      hostname = "overseer.${local.primary_tunnel_domain}"
+      hostname = "overseerr.${local.primary_tunnel_domain}"
       port     = 5055
     }
   ]
