@@ -1,0 +1,22 @@
+name: Generate terraform docs
+
+on:
+  pull_request:
+
+jobs:
+  docs:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      
+      - name: Render terraform docs inside the README.md and push changes back to PR branch
+        uses: terraform-docs/gh-actions@v1.4.1
+        with:
+          working-dir: modules
+          output-file: README.md
+          output-method: inject
+          git-push: "true"
+          recursive: "true"
+          recursive-path: modules
