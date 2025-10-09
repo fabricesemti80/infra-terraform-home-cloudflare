@@ -419,3 +419,63 @@ If returning after a long time:
 **Last Updated**: September 2025
 **Terraform Version**: 1.0+
 **Cloudflare Provider Version**: 5.0.0
+
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 5.10.1 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | 2.5.3 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | 3.7.2 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | 5.10.1 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_primary_tunnel"></a> [primary\_tunnel](#module\_primary\_tunnel) | ./modules/cloudflare-tunnel | n/a |
+| <a name="module_secondary_tunnel"></a> [secondary\_tunnel](#module\_secondary\_tunnel) | ./modules/cloudflare-tunnel | n/a |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [cloudflare_dns_record.primary_dns_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/dns_record) | resource |
+| [cloudflare_dns_record.primary_tunnel_ingress_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/dns_record) | resource |
+| [cloudflare_dns_record.secondary_dns_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/dns_record) | resource |
+| [cloudflare_dns_record.secondary_tunnel_ingress_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/dns_record) | resource |
+| [cloudflare_zero_trust_access_application.secondary_applications](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/zero_trust_access_application) | resource |
+| [cloudflare_zero_trust_access_policy.secondary_zero_trust_access_policy](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/zero_trust_access_policy) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_cf_account_id"></a> [cf\_account\_id](#input\_cf\_account\_id) | The ID of the Cloudflare account. | `string` | n/a | yes |
+| <a name="input_cf_api_token"></a> [cf\_api\_token](#input\_cf\_api\_token) | API token for authenticating with Cloudflare. | `string` | n/a | yes |
+| <a name="input_cf_primary_domain"></a> [cf\_primary\_domain](#input\_cf\_primary\_domain) | The base domain for primary tunnel services (fs-tech.uk). | `string` | n/a | yes |
+| <a name="input_cf_primary_zone_id"></a> [cf\_primary\_zone\_id](#input\_cf\_primary\_zone\_id) | The ID of the Cloudflare zone for the primary tunnel (fs-tech.uk). | `string` | n/a | yes |
+| <a name="input_cf_secondary_domain"></a> [cf\_secondary\_domain](#input\_cf\_secondary\_domain) | The base domain for secondary tunnel services (fabricesemti.dev). | `string` | n/a | yes |
+| <a name="input_cf_secondary_zone_id"></a> [cf\_secondary\_zone\_id](#input\_cf\_secondary\_zone\_id) | The ID of the Cloudflare zone for the secondary tunnel (fabricesemti.dev). | `string` | n/a | yes |
+| <a name="input_config_dir"></a> [config\_dir](#input\_config\_dir) | Directory for configuration files. | `string` | `"config"` | no |
+| <a name="input_terraformed_secondary_tunnel_config"></a> [terraformed\_secondary\_tunnel\_config](#input\_terraformed\_secondary\_tunnel\_config) | Configuration for the Terraformed secondary tunnel. | `string` | `""` | no |
+| <a name="input_terraformed_secondary_tunnel_credential"></a> [terraformed\_secondary\_tunnel\_credential](#input\_terraformed\_secondary\_tunnel\_credential) | Credential for the Terraformed secondary tunnel. | `string` | `""` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_all_tunnel_ids"></a> [all\_tunnel\_ids](#output\_all\_tunnel\_ids) | Map of all tunnel IDs by tunnel type |
+| <a name="output_primary_tunnel_config_content"></a> [primary\_tunnel\_config\_content](#output\_primary\_tunnel\_config\_content) | YAML content for the primary tunnel configuration file |
+| <a name="output_primary_tunnel_id"></a> [primary\_tunnel\_id](#output\_primary\_tunnel\_id) | ID of the primary Cloudflare Tunnel |
+| <a name="output_primary_tunnel_name"></a> [primary\_tunnel\_name](#output\_primary\_tunnel\_name) | Name of the primary Cloudflare Tunnel |
+| <a name="output_secondary_tunnel_config_content"></a> [secondary\_tunnel\_config\_content](#output\_secondary\_tunnel\_config\_content) | YAML content for the secondary tunnel configuration file |
+| <a name="output_secondary_tunnel_id"></a> [secondary\_tunnel\_id](#output\_secondary\_tunnel\_id) | ID of the secondary Cloudflare Tunnel |
+| <a name="output_secondary_tunnel_name"></a> [secondary\_tunnel\_name](#output\_secondary\_tunnel\_name) | Name of the secondary Cloudflare Tunnel |
+<!-- END_TF_DOCS -->
