@@ -1,47 +1,64 @@
 # Cloudflare Tunnel Infrastructure with Terraform
 
-This repository provides a complete Terraform-based infrastructure solution for managing Cloudflare tunnels to expose Docker and Kubernetes services securely over the internet. It automates the creation of tunnels, DNS records, and configuration files for various self-hosted services.
+This repository provides a complete Terraform-based infrastructure solution for managing dual Cloudflare tunnels to expose Docker services securely over the internet. It automates the creation of tunnels, DNS records, and configuration files for various self-hosted services across two separate domains.
 
 ## 🚀 Overview
 
 This project creates and manages:
-- **Cloudflare Tunnels** for secure access to internal services
-- **DNS Records** for service discovery
+
+- **Primary Tunnel** for Docker services (fs-tech.uk)
+- **Secondary Tunnel** for Docker services (fabricesemti.dev)
+- **DNS Records** for service discovery across both domains
 - **Tunnel Configuration Files** for cloudflared clients
 - **Ingress Rules** for routing traffic to specific services
+- **Zero Trust Applications** with bypass policies for secure access
 
 ### Supported Services
 
-The infrastructure supports exposing these services through Cloudflare tunnels:
-- **Home Assistant** (`hass.yourdomain.com`)
-- **Grafana** (`grafana.yourdomain.com`)
-- **Jellyfin** (`jellyfin.yourdomain.com`)
-- **Jellyseerr** (`jellyseerr.yourdomain.com`)
-- **Kestra** (`kestra.yourdomain.com`)
-- **N8N** (`n8n.yourdomain.com`)
-- **Overseerr** (`overseerr.yourdomain.com`)
-- **Plex** (`plex.yourdomain.com`)
-- **Prometheus** (`prometheus.yourdomain.com`)
-- **Prowlarr** (`prowlarr.yourdomain.com`)
-- **Radarr** (`radarr.yourdomain.com`)
-- **SABnzbd** (`sabnzbd.yourdomain.com`)
-- **Sonarr** (`sonarr.yourdomain.com`)
+The infrastructure supports exposing these services through dual Cloudflare tunnels:
+
+**Primary Tunnel (fs-tech.uk):**
+
+- **Homepage** (`homepage.fs-tech.uk`)
+- **Sonarr** (`sonarr.fs-tech.uk`)
+- **Overseerr** (`overseerr.fs-tech.uk`)
+- **Radarr** (`radarr.fs-tech.uk`)
+
+**Secondary Tunnel (fabricesemti.dev):**
+
+- **Home Assistant** (`hass.fabricesemti.dev`)
+- **Grafana** (`grafana.fabricesemti.dev`)
+- **Jellyfin** (`jellyfin.fabricesemti.dev`)
+- **Jellyseerr** (`jellyseerr.fabricesemti.dev`)
+- **Kestra** (`kestra.fabricesemti.dev`)
+- **N8N** (`n8n.fabricesemti.dev`)
+- **Overseerr** (`overseerr.fabricesemti.dev`)
+- **Plex** (`plex.fabricesemti.dev`)
+- **Prometheus** (`prometheus.fabricesemti.dev`)
+- **Prowlarr** (`prowlarr.fabricesemti.dev`)
+- **Radarr** (`radarr.fabricesemti.dev`)
+- **SABnzbd** (`sabnzbd.fabricesemti.dev`)
+- **Sonarr** (`sonarr.fabricesemti.dev`)
 
 ## 📋 Prerequisites
 
 Before using this repository, ensure you have:
 
 ### Required Accounts & Services
-- **Cloudflare Account** with a registered domain
+
+- **Cloudflare Account** with two registered domains (fs-tech.uk and fabricesemti.dev)
 - **Terraform Cloud Account** (optional, for remote state management)
 
 ### Required Tools
+
 - **Terraform** (v1.0+)
 - **Git**
 - **Cloudflare API Token** with appropriate permissions
 
 ### Required Permissions
+
 Your Cloudflare API token needs these permissions:
+
 - **Zone**: `Zone:Read`, `Zone:Edit`
 - **Account**: `Account:Read`
 - **Zero Trust**: `Zero Trust:Edit`
@@ -49,38 +66,50 @@ Your Cloudflare API token needs these permissions:
 ## ⚙️ Initial Setup
 
 ### 1. Clone the Repository
+
 ```bash
 git clone <your-repository-url>
 cd infra-terraform-home-cloudflare
 ```
 
 ### 2. Configure Variables
+
 Create a `terraform.tfvars` file based on the example:
+
 ```bash
 cp terraform_tfvars_example terraform.tfvars
 ```
 
 Edit `terraform.tfvars` with your actual values:
+
 ```hcl
+# Cloudflare Account
 cf_account_id = "your-cloudflare-account-id"
-cf_docker_zone_id = "your-cloudflare-zone-id"
-cf_docker_domain = "yourdomain.com"
 cf_api_token = "your-cloudflare-api-token"
-tunnel_secret = "your-tunnel-secret"
-tunnel_name = "your-tunnel-name"
+
+# Primary Tunnel (fs-tech.uk)
+cf_primary_domain = "fs-tech.uk"
+cf_primary_zone_id = "your-primary-zone-id"
+
+# Secondary Tunnel (fabricesemti.dev)
+cf_secondary_domain = "fabricesemti.dev"
+cf_secondary_zone_id = "your-secondary-zone-id"
 ```
 
 ### 3. Initialize Terraform
+
 ```bash
 terraform init
 ```
 
-### 5. Review the Plan
+### 4. Review the Plan
+
 ```bash
 terraform plan
 ```
 
-### 6. Apply the Configuration
+### 5. Apply the Configuration
+
 ```bash
 terraform apply
 ```
@@ -90,18 +119,37 @@ terraform apply
 ### Service Customization
 
 #### Adding New Services
-To add a new service, edit the `docker_locals.tf` file:
+
+To add a new service to the **Primary Tunnel** (fs-tech.uk), edit the `locals.tf` file:
 
 ```hcl
 locals {
-  docker_tunnel_dns = [
+  primary_tunnel_ingress = [
     # Add your new service here
     {
       protocol = "http"
       name     = "your-service"
-      host     = "192.168.1.100"  # Your service IP
-      hostname = "your-service.${local.docker_domain}"
-      port     = 8080             # Your service port
+      host     = "your-service-host"  # Docker service name
+      hostname = "your-service.${local.primary_tunnel_domain}"
+      port     = 8080
+    },
+    # ... existing services
+  ]
+}
+```
+
+To add a new service to the **Secondary Tunnel** (fabricesemti.dev), edit the `locals.tf` file:
+
+```hcl
+locals {
+  secondary_tunnel_ingress = [
+    # Add your new service here
+    {
+      protocol = "http"
+      name     = "your-service"
+      host     = "10.0.40.20"  # Your service IP
+      hostname = "your-service.${local.secondary_tunnel_domain}"
+      port     = 8080          # Your service port
     },
     # ... existing services
   ]
@@ -109,7 +157,9 @@ locals {
 ```
 
 #### Modifying Service Configuration
+
 Each service configuration includes:
+
 - `protocol`: Network protocol (usually "http")
 - `name`: Service identifier
 - `host`: Internal IP address of the service
@@ -118,27 +168,35 @@ Each service configuration includes:
 
 ### Tunnel Configuration
 
-#### Docker Tunnel
-The Docker tunnel exposes services running on Docker hosts. Default configuration:
-- **Tunnel Name**: `tf-docker-tunnel`
-- **Configuration Directory**: `config/`
-- **Generated Files**:
-  - `config/tf-docker-tunnel-token.json` - Tunnel credentials
-  - `config/tf-docker-tunnel-config.yaml` - Tunnel configuration
-  - `config/tf-docker-tunnel-cloudflared-token.txt` - Base64 encoded token
+#### Primary Tunnel (fs-tech.uk)
 
-#### Kubernetes Tunnel
-The Kubernetes tunnel exposes services running on Kubernetes clusters. Default configuration:
-- **Tunnel Name**: `tf-portainer-tunnel`
+The primary tunnel exposes Docker services using service names. Default configuration:
+
+- **Tunnel Name**: `tf-primary-tunnel`
+- **Domain**: `fs-tech.uk`
 - **Configuration Directory**: `config/`
 - **Generated Files**:
-  - `config/tf-portainer-tunnel-token.json` - Tunnel credentials
-  - `config/tf-portainer-tunnel-config.yaml` - Tunnel configuration
-  - `config/tf-portainer-tunnel-cloudflared-token.txt` - Base64 encoded token
+  - `config/tf-primary-tunnel-token.json` - Tunnel credentials
+  - `config/tf-primary-tunnel-config.yaml` - Tunnel configuration
+  - `config/tf-primary-tunnel-cloudflared-token.txt` - Base64 encoded token
+
+#### Secondary Tunnel (fabricesemti.dev)
+
+The secondary tunnel exposes Docker services. Default configuration:
+
+- **Tunnel Name**: `tf-secondary-tunnel`
+- **Domain**: `fabricesemti.dev`
+- **Configuration Directory**: `config/`
+- **Generated Files**:
+  - `config/tf-secondary-tunnel-token.json` - Tunnel credentials
+  - `config/tf-secondary-tunnel-config.yaml` - Tunnel configuration
+  - `config/tf-secondary-tunnel-cloudflared-token.txt` - Base64 encoded token
+- **Zero Trust Applications**: Configured with bypass policies for secure access
 
 ## 🚀 Deployment
 
 ### Using Terraform CLI
+
 ```bash
 # Initialize (first time only)
 terraform init
@@ -154,48 +212,64 @@ terraform destroy
 ```
 
 ### Using CI/CD Pipeline
+
 The repository includes a Jenkins pipeline that:
+
 1. Installs Terraform
 2. Sets up SSH access
 3. Runs `terraform init`, `terraform plan`, and `terraform apply`
 4. Cleans up temporary files
 
 ### Manual Tunnel Client Setup
+
 After running Terraform, you'll find generated configuration files in the `config/` directory. Use these with cloudflared:
 
 ```bash
 # Install cloudflared (if not already installed)
 # See: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation/
 
-# Run tunnel with generated config
-cloudflared tunnel run --config config/tf-docker-tunnel-config.yaml
+# Run primary tunnel with generated config
+cloudflared tunnel run --config config/tf-primary-tunnel-config.yaml
+
+# Run secondary tunnel with generated config (on different host)
+cloudflared tunnel run --config config/tf-secondary-tunnel-config.yaml
 ```
 
 ## 🔍 Verification
 
 ### Check Tunnel Status
+
 ```bash
 # List tunnels in Cloudflare
 cloudflared tunnel list
 
 # View tunnel configuration
-cloudflared tunnel info <tunnel-name>
+cloudflared tunnel info tf-primary-tunnel
+cloudflared tunnel info tf-secondary-tunnel
 ```
 
 ### Test DNS Resolution
-```bash
-# Test if your domain resolves correctly
-nslookup hass.yourdomain.com
 
-# Test if the tunnel is working
-curl -I https://hass.yourdomain.com
+```bash
+# Test primary tunnel domain resolution
+nslookup homepage.fs-tech.uk
+
+# Test secondary tunnel domain resolution
+nslookup hass.fabricesemti.dev
+
+# Test if the tunnels are working
+curl -I https://homepage.fs-tech.uk
+curl -I https://hass.fabricesemti.dev
 ```
 
 ### View Generated Files
+
 After running Terraform, check the generated configuration files:
+
 ```bash
 ls -la config/
-cat config/tf-docker-tunnel-config.yaml
+cat config/tf-primary-tunnel-config.yaml
+cat config/tf-secondary-tunnel-config.yaml
 ```
 
 ## 🛠️ Troubleshooting
@@ -203,52 +277,73 @@ cat config/tf-docker-tunnel-config.yaml
 ### Common Issues
 
 #### Tunnel Connection Failed
+
 **Symptoms**: Services not accessible through the tunnel
+
 **Solutions**:
+
 1. Check if cloudflared is running: `cloudflared tunnel list`
 2. Verify tunnel credentials: Check the generated token files
 3. Check firewall settings on the host running cloudflared
 4. Verify internal service is accessible on the specified host/port
+5. Ensure correct tunnel is running for the domain (primary vs secondary)
 
 #### DNS Not Resolving
+
 **Symptoms**: Domain names not resolving to tunnel
+
 **Solutions**:
-1. Check if DNS records were created: Check Cloudflare dashboard
-2. Verify the zone ID and domain configuration
+
+1. Check if DNS records were created: Check Cloudflare dashboard for both zones
+2. Verify the zone IDs and domain configuration for both tunnels
 3. Wait for DNS propagation (can take up to 24 hours)
+4. Ensure you're testing the correct domain (fs-tech.uk vs fabricesemti.dev)
 
 #### Terraform Errors
+
 **Symptoms**: Terraform apply fails
+
 **Solutions**:
-1. Check API token permissions
-2. Verify all required variables are set
+
+1. Check API token permissions for both zones
+2. Verify all required variables are set (both primary and secondary)
 3. Check Cloudflare account limits
 4. Review Terraform logs for specific error messages
+5. Ensure zone IDs match the correct domains
 
 ### Debug Mode
+
 Enable debug logging for more detailed information:
+
 ```bash
 # Terraform debug
 TF_LOG=DEBUG terraform apply
 
-# Cloudflared debug
-cloudflared tunnel run --config config/tf-docker-tunnel-config.yaml --loglevel debug
+# Cloudflared debug for primary tunnel
+cloudflared tunnel run --config config/tf-primary-tunnel-config.yaml --loglevel debug
+
+# Cloudflared debug for secondary tunnel
+cloudflared tunnel run --config config/tf-secondary-tunnel-config.yaml --loglevel debug
 ```
 
 ## 🔄 Updates and Maintenance
 
 ### Updating Services
-1. Edit the service configuration in `docker_locals.tf`
+
+1. Edit the service configuration in `locals.tf` (primary_tunnel_ingress or secondary_tunnel_ingress)
 2. Run `terraform plan` to see changes
 3. Run `terraform apply` to update
 
 ### Adding New Tunnels
+
 1. Create a new tunnel module configuration
-2. Add variables for the new tunnel
+2. Add variables for the new tunnel and domain
 3. Update the main tunnel configuration files
-4. Run `terraform apply`
+4. Add DNS records for the new tunnel
+5. Run `terraform apply`
 
 ### Repository Updates
+
 ```bash
 # Pull latest changes
 git pull origin main

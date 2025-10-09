@@ -11,7 +11,7 @@ locals {
 
   # Primary tunnel DNS configuration
   # Define Portainer/Kubernetes services to be exposed through the primary tunnel
-  primary_tunnel_dns = [
+  primary_tunnel_ingress = [
     # Example:
     # {
     #   protocol = "http"
@@ -21,11 +21,36 @@ locals {
     #   port     = 8080
     # }
     {
+      # http://homepage:3000
+      protocol = "http"
+      name     = "homepage"
+      host     = "homepage"
+      hostname = "homepage.${local.primary_tunnel_domain}"
+      port     = 3000
+    },
+    {
+      # http://sonarr:8989
+      protocol = "http"
+      name     = "sonarr"
+      host     = "sonarr"
+      hostname = "sonarr.${local.primary_tunnel_domain}"
+      port     = 8989
+    },
+    {
+      # http://overseerr:5055
       protocol = "http"
       name     = "overseerr"
       host     = "overseerr"
       hostname = "overseerr.${local.primary_tunnel_domain}"
       port     = 5055
+    },
+    {
+      # http://radarr:7878
+      protocol = "http"
+      name     = "radarr"
+      host     = "radarr"
+      hostname = "radarr.${local.primary_tunnel_domain}"
+      port     = 7878
     }
   ]
 
@@ -42,7 +67,7 @@ locals {
 
   # Secondary tunnel DNS configuration
   # Define Docker services to be exposed through the secondary tunnel
-  secondary_tunnel_dns = [
+  secondary_tunnel_ingress = [
     {
       protocol = "http"
       name     = "@" # Root domain

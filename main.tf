@@ -13,7 +13,7 @@ module "primary_tunnel" {
 
   ingress_rules = concat(
     [
-      for domain in local.primary_tunnel_dns : {
+      for domain in local.primary_tunnel_ingress : {
         hostname = domain.hostname
         service  = "${domain.protocol}://${domain.host}:${domain.port}"
       }
@@ -27,8 +27,8 @@ module "primary_tunnel" {
 }
 
 # DNS records for primary tunnel endpoints
-resource "cloudflare_dns_record" "primary_tunnel_dns_records" {
-  for_each = { for domain in local.primary_tunnel_dns : domain.name => domain }
+resource "cloudflare_dns_record" "primary_tunnel_ingress_records" {
+  for_each = { for domain in local.primary_tunnel_ingress : domain.name => domain }
   zone_id  = var.cf_primary_zone_id
   name     = each.value.name
   content  = "${module.primary_tunnel.tunnel_id}.cfargotunnel.com"
@@ -90,7 +90,7 @@ module "secondary_tunnel" {
 
   ingress_rules = concat(
     [
-      for domain in local.secondary_tunnel_dns : {
+      for domain in local.secondary_tunnel_ingress : {
         hostname = domain.hostname
         service  = "${domain.protocol}://${domain.host}:${domain.port}"
       }
@@ -104,8 +104,8 @@ module "secondary_tunnel" {
 }
 
 # DNS records for secondary tunnel endpoints
-resource "cloudflare_dns_record" "secondary_tunnel_dns_records" {
-  for_each = { for domain in local.secondary_tunnel_dns : domain.name => domain }
+resource "cloudflare_dns_record" "secondary_tunnel_ingress_records" {
+  for_each = { for domain in local.secondary_tunnel_ingress : domain.name => domain }
   zone_id  = var.cf_secondary_zone_id
   name     = each.value.name
   content  = "${module.secondary_tunnel.tunnel_id}.cfargotunnel.com"
