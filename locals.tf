@@ -28,15 +28,15 @@ locals {
       hostname = "homepage.${local.primary_tunnel_domain}"
       port     = 3000
     },
-        {
+    {
       # http://n8n:5678
       protocol = "http"
       name     = "n8n"
       host     = "n8n"
       hostname = "n8n.${local.primary_tunnel_domain}"
       port     = 5678
-    },    
-  {
+    },
+    {
       # http://jellyfin:8096
       protocol = "http"
       name     = "jellyfin"
@@ -227,6 +227,42 @@ locals {
       session_duration  = "24h"
       skip_interstitial = true
     },
+  }
+
+  # ============================================================================ #
+  #                         TERTIARY TUNNEL CONFIGURATION                       #
+  # ============================================================================ #
+
+  tertiary_tunnel_domain = var.cf_tertiary_domain
+
+  # Tertiary tunnel DNS configuration
+  # Define services to be exposed through the tertiary tunnel
+  tertiary_tunnel_ingress = [
+    {
+      protocol = "http"
+      name     = "gitlab"
+      host     = "10.0.40.32"
+      hostname = "gitlab.${local.tertiary_tunnel_domain}"
+      port     = 8929
+    }
+  ]
+
+  # Additional tertiary tunnel-specific DNS records
+  tertiary_other_dns = [
+    # Add any additional DNS records for tertiary tunnel services here
+  ]
+
+  # Zero Trust Applications Configuration for tertiary tunnel services
+  tertiary_zero_trust_applications = {
+    # Add Zero Trust applications for tertiary tunnel services here
+    # Example:
+    # service_name = {
+    #   name              = "Service Name"
+    #   domain            = "service.${var.cf_tertiary_domain}"
+    #   type              = "self_hosted"
+    #   session_duration  = "24h"
+    #   skip_interstitial = true
+    # }
   }
 }
 
