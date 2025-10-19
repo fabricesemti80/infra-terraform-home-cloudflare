@@ -42,3 +42,4 @@ terraform.rc
 .vscode/settings.json
 .DS_Store
 **/config/**
+mcp_server.log

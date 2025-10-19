@@ -28,6 +28,22 @@ locals {
       hostname = "homepage.${local.primary_tunnel_domain}"
       port     = 3000
     },
+        {
+      # http://n8n:5678
+      protocol = "http"
+      name     = "n8n"
+      host     = "n8n"
+      hostname = "n8n.${local.primary_tunnel_domain}"
+      port     = 5678
+    },    
+  {
+      # http://jellyfin:8096
+      protocol = "http"
+      name     = "jellyfin"
+      host     = "jellyfin"
+      hostname = "jellyfin.${local.primary_tunnel_domain}"
+      port     = 8096
+    },
     {
       # http://sonarr:8989
       protocol = "http"
