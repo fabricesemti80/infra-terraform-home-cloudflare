@@ -199,6 +199,13 @@ locals {
       hostname = "gitlab.${local.secondary_tunnel_domain}"
       port     = 8929
     },
+        {
+      protocol = "http"
+      name     = "git"
+      host     = "10.0.40.100"
+      hostname = "git.${local.secondary_tunnel_domain}"
+      port     = 8929
+    },
     {
       protocol = "http"
       name     = "n8n"

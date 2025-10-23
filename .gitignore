@@ -42,3 +42,4 @@ terraform.rc
 .DS_Store
 **/config/**
 mcp_server.log
+tfplan
