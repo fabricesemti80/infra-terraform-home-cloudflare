@@ -134,13 +134,13 @@ locals {
       hostname = "kestra.${local.secondary_tunnel_domain}"
       port     = 8080
     },
-    {
-      protocol = "http"
-      name     = "n8n"
-      host     = "10.0.40.21"
-      hostname = "n8n.${local.secondary_tunnel_domain}"
-      port     = 5678
-    },
+    # {
+    #   protocol = "http"
+    #   name     = "n8n"
+    #   host     = "10.0.40.21"
+    #   hostname = "n8n.${local.secondary_tunnel_domain}"
+    #   port     = 5678
+    # },
     {
       protocol = "http"
       name     = "overseerr"
@@ -244,6 +244,13 @@ locals {
       host     = "10.0.40.32"
       hostname = "gitlab.${local.tertiary_tunnel_domain}"
       port     = 8929
+    },
+    {
+      protocol = "http"
+      name     = "n8n"
+      host     = "10.0.40.80"
+      hostname = "n8n.${local.tertiary_tunnel_domain}"
+      port     = 5678
     }
   ]
 
