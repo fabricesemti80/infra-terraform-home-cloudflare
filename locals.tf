@@ -83,6 +83,7 @@ locals {
 
   # Secondary tunnel DNS configuration
   # Define Docker services to be exposed through the secondary tunnel
+  # Merged with tertiary tunnel services since they use the same domain
   secondary_tunnel_ingress = [
     {
       protocol = "http"
@@ -127,13 +128,13 @@ locals {
       hostname = "jellyseerr.${local.secondary_tunnel_domain}"
       port     = 5056
     },
-    {
-      protocol = "http"
-      name     = "kestra"
-      host     = "10.0.40.21"
-      hostname = "kestra.${local.secondary_tunnel_domain}"
-      port     = 8080
-    },
+    # {
+    #   protocol = "http"
+    #   name     = "kestra"
+    #   host     = "10.0.40.21"
+    #   hostname = "kestra.${local.secondary_tunnel_domain}"
+    #   port     = 8080
+    # },
     # {
     #   protocol = "http"
     #   name     = "n8n"
@@ -155,13 +156,13 @@ locals {
       hostname = "plex.${local.secondary_tunnel_domain}"
       port     = 32400
     },
-    {
-      protocol = "http"
-      name     = "prometheus"
-      host     = "10.0.40.20"
-      hostname = "prometheus.${local.secondary_tunnel_domain}"
-      port     = 9090
-    },
+    # {
+    #   protocol = "http"
+    #   name     = "prometheus"
+    #   host     = "10.0.40.20"
+    #   hostname = "prometheus.${local.secondary_tunnel_domain}"
+    #   port     = 9090
+    # },
     {
       protocol = "http"
       name     = "prowlarr"
@@ -190,6 +191,21 @@ locals {
       hostname = "sonarr.${local.secondary_tunnel_domain}"
       port     = 8989
     },
+    # Merged from tertiary tunnel (formerly Umbrel OS services)
+    {
+      protocol = "http"
+      name     = "gitlab"
+      host     = "10.0.40.32"
+      hostname = "gitlab.${local.secondary_tunnel_domain}"
+      port     = 8929
+    },
+    {
+      protocol = "http"
+      name     = "n8n"
+      host     = "10.0.40.80"
+      hostname = "n8n.${local.secondary_tunnel_domain}"
+      port     = 5678
+    }
   ]
 
   # Additional secondary tunnel-specific DNS records
@@ -229,48 +245,7 @@ locals {
     },
   }
 
-  # ============================================================================ #
-  #                         TERTIARY TUNNEL CONFIGURATION                       #
-  # ============================================================================ #
 
-  tertiary_tunnel_domain = var.cf_tertiary_domain
-
-  # Tertiary tunnel DNS configuration
-  # Define services to be exposed through the tertiary tunnel
-  tertiary_tunnel_ingress = [
-    {
-      protocol = "http"
-      name     = "gitlab"
-      host     = "10.0.40.32"
-      hostname = "gitlab.${local.tertiary_tunnel_domain}"
-      port     = 8929
-    },
-    {
-      protocol = "http"
-      name     = "n8n"
-      host     = "10.0.40.80"
-      hostname = "n8n.${local.tertiary_tunnel_domain}"
-      port     = 5678
-    }
-  ]
-
-  # Additional tertiary tunnel-specific DNS records
-  tertiary_other_dns = [
-    # Add any additional DNS records for tertiary tunnel services here
-  ]
-
-  # Zero Trust Applications Configuration for tertiary tunnel services
-  tertiary_zero_trust_applications = {
-    # Add Zero Trust applications for tertiary tunnel services here
-    # Example:
-    # service_name = {
-    #   name              = "Service Name"
-    #   domain            = "service.${var.cf_tertiary_domain}"
-    #   type              = "self_hosted"
-    #   session_duration  = "24h"
-    #   skip_interstitial = true
-    # }
-  }
 }
 
 

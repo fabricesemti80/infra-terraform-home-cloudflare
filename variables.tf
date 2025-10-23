@@ -54,19 +54,7 @@ variable "terraformed_secondary_tunnel_credential" {
   default     = ""
 }
 
-# ============================================================================ #
-#                      TERTIARY TUNNEL CONFIGURATION VARIABLES                #
-# ============================================================================ #
 
-variable "cf_tertiary_zone_id" {
-  description = "The ID of the Cloudflare zone for the tertiary tunnel."
-  type        = string
-}
-
-variable "cf_tertiary_domain" {
-  description = "The base domain for tertiary tunnel services."
-  type        = string
-}
 
 
 

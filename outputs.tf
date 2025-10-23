@@ -38,24 +38,7 @@ output "secondary_tunnel_config_content" {
 
 
 
-# ============================================================================ #
-#                         TERTIARY TUNNEL OUTPUTS                            #
-# ============================================================================ #
 
-output "tertiary_tunnel_id" {
-  description = "ID of the tertiary Cloudflare Tunnel"
-  value       = module.tertiary_tunnel.tunnel_id
-}
-
-output "tertiary_tunnel_name" {
-  description = "Name of the tertiary Cloudflare Tunnel"
-  value       = module.tertiary_tunnel.tunnel_name
-}
-
-output "tertiary_tunnel_config_content" {
-  description = "YAML content for the tertiary tunnel configuration file"
-  value       = module.tertiary_tunnel.tunnel_config_content
-}
 
 # ============================================================================ #
 #                            COMBINED OUTPUTS                                #
@@ -66,6 +49,5 @@ output "all_tunnel_ids" {
   value = {
     primary   = module.primary_tunnel.tunnel_id
     secondary = module.secondary_tunnel.tunnel_id
-    tertiary  = module.tertiary_tunnel.tunnel_id
   }
 }
