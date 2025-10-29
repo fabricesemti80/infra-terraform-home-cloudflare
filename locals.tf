@@ -43,6 +43,14 @@ locals {
       host     = "jellyfin"
       hostname = "jellyfin.${local.primary_tunnel_domain}"
       port     = 8096
+    },    
+    {
+      # http://immich:2283
+      protocol = "http"
+      name     = "immich"
+      host     = "immich_server" # name of the container
+      hostname = "immich.${local.primary_tunnel_domain}"
+      port     = 2283
     },
     {
       # http://sonarr:8989
@@ -205,6 +213,13 @@ locals {
       host     = "10.0.40.100"
       hostname = "git.${local.secondary_tunnel_domain}"
       port     = 8929
+    },
+           {
+      protocol = "http"
+      name     = "uptime"
+      host     = "10.0.40.100"
+      hostname = "uptime.${local.secondary_tunnel_domain}"
+      port     = 3001
     },
     {
       protocol = "http"
