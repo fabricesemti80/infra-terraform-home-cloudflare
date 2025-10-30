@@ -425,7 +425,7 @@ If returning after a long time:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 5.10.1 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | 5.12.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | 2.5.3 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | 3.7.2 |
 
@@ -433,7 +433,7 @@ If returning after a long time:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | 5.10.1 |
+| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | 5.12.0 |
 
 ## Modules
 
@@ -446,12 +446,12 @@ If returning after a long time:
 
 | Name | Type |
 |------|------|
-| [cloudflare_dns_record.primary_dns_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/dns_record) | resource |
-| [cloudflare_dns_record.primary_tunnel_ingress_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/dns_record) | resource |
-| [cloudflare_dns_record.secondary_dns_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/dns_record) | resource |
-| [cloudflare_dns_record.secondary_tunnel_ingress_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/dns_record) | resource |
-| [cloudflare_zero_trust_access_application.secondary_applications](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/zero_trust_access_application) | resource |
-| [cloudflare_zero_trust_access_policy.secondary_zero_trust_access_policy](https://registry.terraform.io/providers/cloudflare/cloudflare/5.10.1/docs/resources/zero_trust_access_policy) | resource |
+| [cloudflare_dns_record.primary_dns_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.12.0/docs/resources/dns_record) | resource |
+| [cloudflare_dns_record.primary_tunnel_ingress_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.12.0/docs/resources/dns_record) | resource |
+| [cloudflare_dns_record.secondary_dns_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.12.0/docs/resources/dns_record) | resource |
+| [cloudflare_dns_record.secondary_tunnel_ingress_records](https://registry.terraform.io/providers/cloudflare/cloudflare/5.12.0/docs/resources/dns_record) | resource |
+| [cloudflare_zero_trust_access_application.secondary_applications](https://registry.terraform.io/providers/cloudflare/cloudflare/5.12.0/docs/resources/zero_trust_access_application) | resource |
+| [cloudflare_zero_trust_access_policy.secondary_zero_trust_access_policy](https://registry.terraform.io/providers/cloudflare/cloudflare/5.12.0/docs/resources/zero_trust_access_policy) | resource |
 
 ## Inputs
 
